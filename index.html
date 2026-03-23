@@ -117,16 +117,11 @@ async function init(){
   document.getElementById('wn').textContent=`(${data.want.length})`;
   document.getElementById('sn').textContent=`(${data.seen.length})`;
   
-  // Load want bands with Deezer data
   for(const b of data.want){
-    const dz=await dzLookup(b.name,b.track);
-    wg.appendChild(mkCard(b,false,dz));
+    wg.appendChild(mkCard(b,false,{img:b.img,track:b.trackTitle,preview:b.preview}));
   }
-  
-  // Load seen bands with Deezer images
   for(const b of data.seen){
-    const dz=await dzLookup(b.name,b.track);
-    sg.appendChild(mkCard(b,true,dz));
+    sg.appendChild(mkCard(b,true,{img:b.img,track:b.trackTitle,preview:b.preview}));
   }
 }
 
