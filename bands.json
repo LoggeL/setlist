@@ -1,0 +1,269 @@
+{
+  "want": [
+    {
+      "name": "Jack Pott",
+      "genre": "Punk",
+      "deezer": "4XahEEGMFOLFifWBsFMMnN"
+    },
+    {
+      "name": "Zirkel",
+      "genre": "Deutschrap",
+      "deezer": "3ZVjA9LMKyghKJcSyRhaid"
+    },
+    {
+      "name": "Casper",
+      "genre": "Deutschrap/Rock",
+      "deezer": "1GhPHrq36VKCY3ucVaZCfo"
+    },
+    {
+      "name": "Broilers",
+      "genre": "Punk Rock",
+      "deezer": "3csTaq1Nn36M2N0Y0iAB9g"
+    },
+    {
+      "name": "Antifuchs",
+      "genre": "Deutschrap",
+      "deezer": "0Y6dGpR4T4kWjmOkDQxtfK"
+    },
+    {
+      "name": "OK KID",
+      "genre": "Indie/Electro",
+      "deezer": "1MihhgXkTahISnNmRFktlM"
+    },
+    {
+      "name": "WON WELT",
+      "genre": "Rap",
+      "deezer": "5byLzOPqrzLxdbcTjRbnFV"
+    },
+    {
+      "name": "Liedfett",
+      "genre": "Punk/Ska",
+      "deezer": "1nDifYvXKXqRaP89uysa1d"
+    },
+    {
+      "name": "Deichkind",
+      "genre": "Electro/Hip-Hop",
+      "deezer": "5FxtHAML3JGMbVNv8eQsml"
+    },
+    {
+      "name": "Haller",
+      "genre": "Indie",
+      "deezer": "7l0gDf5VIpOPpDMdYt8vNz"
+    },
+    {
+      "name": "Feine Sahne Fischfilet",
+      "genre": "Punk",
+      "deezer": "6FHkdSjZJiKSkdCtNRMDwj"
+    },
+    {
+      "name": "JEREMIAS",
+      "genre": "Indie Pop",
+      "deezer": "2OZBQ0P5THFaWqSSHxOcr6"
+    },
+    {
+      "name": "Rogers",
+      "genre": "Punk Rock",
+      "deezer": "41bJHheI00sy9FPneBtjBa"
+    },
+    {
+      "name": "Linkin Park",
+      "genre": "Nu Metal/Rock",
+      "deezer": "6XyY86QOPPez6joegGAjR5"
+    },
+    {
+      "name": "bac",
+      "genre": "Punk",
+      "deezer": "6h0GZU25B0OgwlvJn3j2fZ"
+    },
+    {
+      "name": "Bruchbude",
+      "genre": "Punk",
+      "deezer": "0Fp9pg7U4Rwq8nYup2wxig"
+    },
+    {
+      "name": "Paula Hartmann",
+      "genre": "Pop/R&B",
+      "deezer": "6gU2lzMPisjOmHlEN9FFJX"
+    },
+    {
+      "name": "Focus.",
+      "genre": "Punk",
+      "deezer": "0pDqdJxqAkGWfl3YZ6QHIR"
+    },
+    {
+      "name": "Freude",
+      "genre": "Indie",
+      "deezer": "5VPvBGk5o9o15GRiOoTtP5"
+    },
+    {
+      "name": "Karina Rose",
+      "genre": "Pop",
+      "deezer": "2ayMbJViCDfBOkxNYqIFXt"
+    },
+    {
+      "name": "Lumpenpack",
+      "genre": "Comedy/Musik",
+      "deezer": "2K6bdgBDhulVNz0JWYRwFO"
+    },
+    {
+      "name": "Raumfisch",
+      "genre": "Indie",
+      "deezer": "5wVFbzJNBZNkaq5rN9zxGD"
+    },
+    {
+      "name": "Billy Talent",
+      "genre": "Punk Rock",
+      "deezer": "2kCDVxSRso0RSVIL5K99JR"
+    }
+  ],
+  "seen": [
+    {
+      "name": "Kraftklub",
+      "genre": "Indie Rock"
+    },
+    {
+      "name": "Swiss",
+      "genre": "Hip-Hop"
+    },
+    {
+      "name": "Electric Callboy",
+      "genre": "Metalcore/Electro"
+    },
+    {
+      "name": "Three Days Grace",
+      "genre": "Post-Grunge"
+    },
+    {
+      "name": "KIZ",
+      "genre": "Deutschrap"
+    },
+    {
+      "name": "Bring me the Horizon",
+      "genre": "Metalcore"
+    },
+    {
+      "name": "Blond",
+      "genre": "Indie Pop"
+    },
+    {
+      "name": "Provinz",
+      "genre": "Indie"
+    },
+    {
+      "name": "Donots",
+      "genre": "Punk Rock"
+    },
+    {
+      "name": "Engst",
+      "genre": "Rock"
+    },
+    {
+      "name": "Drei Meter Feldweg",
+      "genre": "Rock"
+    },
+    {
+      "name": "Hollywood Undead",
+      "genre": "Rap Rock"
+    },
+    {
+      "name": "FiNCH",
+      "genre": "Deutschrap"
+    },
+    {
+      "name": "Raum27",
+      "genre": "Punk"
+    },
+    {
+      "name": "Kaffkiez",
+      "genre": "Indie"
+    },
+    {
+      "name": "Querbeat",
+      "genre": "Brass/Pop"
+    },
+    {
+      "name": "From Fall to Spring",
+      "genre": "Nu Metal"
+    },
+    {
+      "name": "SDP",
+      "genre": "Hip-Hop/Pop"
+    },
+    {
+      "name": "Peter Fox",
+      "genre": "Dancehall/Reggae"
+    },
+    {
+      "name": "Bluthund",
+      "genre": "Punk"
+    },
+    {
+      "name": "Don't Tell the Others",
+      "genre": "Rock"
+    },
+    {
+      "name": "Bosse",
+      "genre": "Indie Rock"
+    },
+    {
+      "name": "Von wegen Lisbeth",
+      "genre": "Indie"
+    },
+    {
+      "name": "Ok.danke.tschüss",
+      "genre": "Punk"
+    },
+    {
+      "name": "ENNIO",
+      "genre": "Rap"
+    },
+    {
+      "name": "Madsen",
+      "genre": "Indie Rock"
+    },
+    {
+      "name": "Team Scheiße",
+      "genre": "Punk"
+    },
+    {
+      "name": "Pendulum",
+      "genre": "Drum & Bass"
+    },
+    {
+      "name": "Against the Current",
+      "genre": "Pop Rock"
+    },
+    {
+      "name": "Betontod",
+      "genre": "Punk Rock"
+    },
+    {
+      "name": "Skindred",
+      "genre": "Nu Metal/Ragga"
+    },
+    {
+      "name": "Yu",
+      "genre": "Indie"
+    },
+    {
+      "name": "Tream",
+      "genre": "Pop"
+    },
+    {
+      "name": "The Butcher Sisters",
+      "genre": "Punk"
+    },
+    {
+      "name": "Ritter Lean",
+      "genre": "Rap"
+    },
+    {
+      "name": "Berq",
+      "genre": "Rap"
+    },
+    {
+      "name": "Zartmann",
+      "genre": "Indie"
+    }
+  ]
+}
