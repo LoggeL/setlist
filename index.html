@@ -2,7 +2,12 @@
 <html lang="de">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>🎸 Live sehen — Bandliste</title>
+<title>Live sehen — Bandliste</title>
+<meta property="og:title" content="Live sehen — Bandliste">
+<meta property="og:description" content="Bands die ich noch live sehen will — und welche ich schon gesehen hab">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bands.logge.top">
+<meta name="description" content="Bands die ich noch live sehen will">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎸</text></svg>">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -68,25 +73,7 @@ let au=null,cur=null;
 const h=n=>n.split('').reduce((a,c)=>a+c.charCodeAt(0),0)%360;
 const ini=n=>n.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
 
-async function dzLookup(name, trackName){
-  try{
-    const r=await fetch(`https://api.deezer.com/search/artist?q=${encodeURIComponent(name)}&limit=1`);
-    const d=await r.json();
-    if(!d.data||!d.data[0])return{};
-    const a=d.data[0];
-    let t={};
-    if(trackName){
-      const sr=await fetch(`https://api.deezer.com/search?q=${encodeURIComponent(name+' '+trackName)}&limit=5`);
-      const sd=await sr.json();
-      if(sd.data){const m=sd.data.find(s=>s.artist&&s.artist.id===a.id);t=m||sd.data[0]||{}}
-    }else{
-      const tr=await fetch(`https://api.deezer.com/artist/${a.id}/top?limit=1`);
-      const td=await tr.json();
-      t=td.data&&td.data[0]?td.data[0]:{};
-    }
-    return{img:a.picture_medium||'',track:t.title||'',preview:t.preview||''};
-  }catch(e){return{}}
-}
+
 
 function mkCard(b,seen,dz){
   const el=document.createElement('div');
