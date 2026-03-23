@@ -15,7 +15,7 @@
       "track": "Dorn",
       "img": "https://cdn-images.dzcdn.net/images/artist/ab3526a996738e1b856d4f14a5263744/250x250-000000-80-0-0.jpg",
       "trackTitle": "Woran hat et jelegen?",
-      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/8/3/7/0/83755cbff8982f776dee9a8f3163abcd.mp3?hdnea=exp=1774307042~acl=/api/1/1/8/3/7/0/83755cbff8982f776dee9a8f3163abcd.mp3*~data=user_id=0,application_id=42~hmac=2b2bdec55e49fb7f25faa82e773bfae96ce002eb3092241028ab420bf7e059d4"
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/8/3/7/0/83755cbff8982f776dee9a8f3163abcd.mp3?hdnea=exp=1774308086~acl=/api/1/1/8/3/7/0/83755cbff8982f776dee9a8f3163abcd.mp3*~data=user_id=0,application_id=42~hmac=3b84f906856c511e8b0acad41b154d301241047d490f513b32518c9f35f63da6"
     },
     {
       "name": "Casper",
@@ -120,7 +120,8 @@
       "deezer": "6h0GZU25B0OgwlvJn3j2fZ",
       "img": "https://cdn-images.dzcdn.net/images/artist/1a03753615fd067ef768880ae6dc05f4/250x250-000000-80-0-0.jpg",
       "trackTitle": "Rosaroter Tee",
-      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/e/b/2/0/eb208fbe630167eb87349bd0dfa70184.mp3?hdnea=exp=1774307048~acl=/api/1/1/e/b/2/0/eb208fbe630167eb87349bd0dfa70184.mp3*~data=user_id=0,application_id=42~hmac=4de852bfaec83e5c671204d9398b047add59ad2133b269be6cd56f5208fdcab2"
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/e/b/2/0/eb208fbe630167eb87349bd0dfa70184.mp3?hdnea=exp=1774308086~acl=/api/1/1/e/b/2/0/eb208fbe630167eb87349bd0dfa70184.mp3*~data=user_id=0,application_id=42~hmac=e93dace8ab16929565ec09a80c5c52d9236e9fddd9649ba25a91691c66e544c9",
+      "track": "Zwanzig"
     },
     {
       "name": "Bruchbude",
@@ -168,7 +169,9 @@
       "genre": "Comedy/Musik",
       "deezer": "2K6bdgBDhulVNz0JWYRwFO",
       "track": "Ketamin",
-      "img": "https://cdn-images.dzcdn.net/images/artist/91edf179d12f90ccb8a28d5128916ffa/250x250-000000-80-0-0.jpg"
+      "img": "https://cdn-images.dzcdn.net/images/artist/91edf179d12f90ccb8a28d5128916ffa/250x250-000000-80-0-0.jpg",
+      "trackTitle": "Ford Fiesta",
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/5/a/f/0/5af6bf5c7b4673ec4b0097abd3bcdbc1.mp3?hdnea=exp=1774308087~acl=/api/1/1/5/a/f/0/5af6bf5c7b4673ec4b0097abd3bcdbc1.mp3*~data=user_id=0,application_id=42~hmac=731f5b76ac9245f7621f6aa77afa0407209875d29209ef2032b571846c554698"
     },
     {
       "name": "Raumfisch",
@@ -213,8 +216,9 @@
       "name": "Electric Callboy",
       "genre": "Metalcore/Electro",
       "img": "https://cdn-images.dzcdn.net/images/artist/c043f010f24c5c9c2c4fabd49f2e9479/250x250-000000-80-0-0.jpg",
-      "trackTitle": "RATATATA",
-      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/f/8/f/0/f8f6bceac4e5370012b6fb9e6d8e66a1.mp3?hdnea=exp=1774307054~acl=/api/1/1/f/8/f/0/f8f6bceac4e5370012b6fb9e6d8e66a1.mp3*~data=user_id=0,application_id=42~hmac=3bb3b4a4c6d91c3e9fbf4f94819464f7314b9e88cb51a4d7bce09f94b0475eca"
+      "trackTitle": "Pump It",
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/1/b/2/0/1b2ae4fae119cf320b3a49461539f241.mp3?hdnea=exp=1774308026~acl=/api/1/1/1/b/2/0/1b2ae4fae119cf320b3a49461539f241.mp3*~data=user_id=0,application_id=42~hmac=6cbf134a9189c3667de32665033e5d0cb5924f6d4b141b0f063a48a7b00cd68a",
+      "track": "Pump It"
     },
     {
       "name": "Three Days Grace",
@@ -241,8 +245,9 @@
       "name": "Blond",
       "genre": "Indie Pop",
       "img": "https://cdn-images.dzcdn.net/images/artist/aecbe3bf6476ed4f040dfd110dc66738/250x250-000000-80-0-0.jpg",
-      "trackTitle": "So schön",
-      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/c/a/f/0/cafd3b3eccd0c07c5fca63f32d22ea26.mp3?hdnea=exp=1774307056~acl=/api/1/1/c/a/f/0/cafd3b3eccd0c07c5fca63f32d22ea26.mp3*~data=user_id=0,application_id=42~hmac=a6f7ca73c13a732acb89601683fb58c62a378c69e79e717be5495b2df92e4544"
+      "trackTitle": "SB-Kassen Lover",
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/4/e/1/0/4e12659a1e425138b6fbd918bf5f9d66.mp3?hdnea=exp=1774308026~acl=/api/1/1/4/e/1/0/4e12659a1e425138b6fbd918bf5f9d66.mp3*~data=user_id=0,application_id=42~hmac=66ed6dcc51604d21e8644001a9df172b17e3c611e6eb29b2f50106eafbf5af71",
+      "track": "SB Kassen Lover"
     },
     {
       "name": "Provinz",
@@ -343,8 +348,9 @@
       "name": "Bosse",
       "genre": "Indie Rock",
       "img": "https://cdn-images.dzcdn.net/images/artist/7cc0fab677927835c74b051ecf7d6ea4/250x250-000000-80-0-0.jpg",
-      "trackTitle": "Einmal alles bitte",
-      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/0/4/9/0/0497bbefaff3761b76a5daf9cdfa30ac.mp3?hdnea=exp=1774307063~acl=/api/1/1/0/4/9/0/0497bbefaff3761b76a5daf9cdfa30ac.mp3*~data=user_id=0,application_id=42~hmac=93b1a25f7b8fdf34f3a98ce33aa2bd03ed88a1cd966cb588e6c3f2a7884dc4f3"
+      "trackTitle": "Frankfurt Oder (Single Version)",
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/4/4/5/0/445ce275eca04b527c6bc17f117aa901.mp3?hdnea=exp=1774308026~acl=/api/1/1/4/4/5/0/445ce275eca04b527c6bc17f117aa901.mp3*~data=user_id=0,application_id=42~hmac=675249ca1307c4cb6955b87330627d0baba638d85f39a8f3058bed271d3c26d9",
+      "track": "Frankfurt Oder"
     },
     {
       "name": "Von wegen Lisbeth",
@@ -364,8 +370,9 @@
       "name": "ENNIO",
       "genre": "Rap",
       "img": "https://cdn-images.dzcdn.net/images/artist/971ea602a3a8bd01a1fcbd7021749eac/250x250-000000-80-0-0.jpg",
-      "trackTitle": "Am Ende dieses Lieds",
-      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/c/e/1/0/ce1a5c6dc181ef3ebd0bcbf8efac66f2.mp3?hdnea=exp=1774307065~acl=/api/1/1/c/e/1/0/ce1a5c6dc181ef3ebd0bcbf8efac66f2.mp3*~data=user_id=0,application_id=42~hmac=a433e382e537175ffe148d3c34f5e6f491b0f3307f71e8014ed2d479eb7ca280"
+      "trackTitle": "Wand",
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/2/6/d/0/26deb326438ca5ea5afb726c22561f40.mp3?hdnea=exp=1774308026~acl=/api/1/1/2/6/d/0/26deb326438ca5ea5afb726c22561f40.mp3*~data=user_id=0,application_id=42~hmac=2d66b9bc2fbd79ad13d7915ec82d7127fa99fb6e1286c6efcf269c928d9d9f2a",
+      "track": "Wand"
     },
     {
       "name": "Madsen",
