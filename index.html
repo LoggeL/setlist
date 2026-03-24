@@ -38,8 +38,8 @@ header p{color:var(--muted);margin-top:8px;font-size:.9rem;letter-spacing:.5px}
 .card{background:var(--card);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.06);transition:all .3s;cursor:pointer;backdrop-filter:blur(20px);animation:slideUp .4s ease both}
 .card:hover{border-color:rgba(255,45,85,.3);transform:translateY(-2px) scale(1.01);background:rgba(255,255,255,.07)}
 .card.playing{border-color:var(--accent);animation:pulse 2s ease infinite}
-.card.seen{opacity:.35}.card.seen:hover{opacity:.6}
-.card.seen .n{text-decoration:line-through;text-decoration-color:var(--accent)}
+.card.seen{opacity:.75}.card.seen:hover{opacity:.9}
+
 .top{display:flex;align-items:center;gap:12px;padding:14px 16px;position:relative}
 .av{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;flex-shrink:0;overflow:hidden;color:rgba(255,255,255,.8)}
 .av.sm{width:44px;height:44px;border-radius:12px}
@@ -48,6 +48,7 @@ header p{color:var(--muted);margin-top:8px;font-size:.9rem;letter-spacing:.5px}
 .n{font-weight:700;font-size:.95rem;letter-spacing:-.3px}
 .gen{color:var(--muted);font-size:.7rem;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
 .trk{font-size:.7rem;margin-top:4px;opacity:.6;display:flex;align-items:center;gap:4px}
+.note{font-size:.65rem;color:var(--muted);margin-top:2px;font-style:italic;display:flex;align-items:center;gap:3px}
 .trk::before{content:'♫';color:var(--accent)}
 .badge{position:absolute;top:8px;right:10px;font-size:.55rem;padding:3px 8px;border-radius:8px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
 .badge.w{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
@@ -78,11 +79,6 @@ footer{text-align:center;padding:60px 20px 40px;color:#333;font-size:.7rem;lette
 <span>🔊</span>
 </div>
 </header>
-<div class="fl">
-<button class="on" onclick="fi('all',this)">Alle</button>
-<button onclick="fi('want',this)">🎯 Bucket List</button>
-<button onclick="fi('seen',this)">✓ Erlebt</button>
-</div>
 <div class="sec" id="ws"><em>🎯</em> BUCKET LIST <span class="c" id="wn"></span></div>
 <div class="g" id="wg"></div>
 <div class="sec" id="ss"><em>✓</em> ERLEBT <span class="c" id="sn"></span></div>
@@ -99,12 +95,12 @@ function mkCard(b,seen,dz,i){
   el.style.animationDelay=`${i*0.03}s`;
   const img=dz&&dz.img?`<img src="${dz.img}" alt="${b.name}" loading="lazy">`:`${ini(b.name)}`;
   const avStyle=dz&&dz.img?'':`style="background:hsl(${h(b.name)},50%,20%)"`;
-  const track=dz&&dz.track?`<div class="trk">${dz.track}</div>`:'';
+  const track=dz&&dz.track?`<div class="trk">${dz.track}</div>`:'';const note=b.note?`<div class="note">📍 ${b.note}</div>`:'';
   const preview=dz&&dz.preview?dz.preview:'';
   
   el.innerHTML=`<div class="top">
     <div class="av${seen?' sm':''}" ${avStyle}>${img}</div>
-    <div class="inf"><div class="n">${b.name}</div><div class="gen">${b.genre||''}</div>${track}</div>
+    <div class="inf"><div class="n">${b.name}</div><div class="gen">${b.genre||''}</div>${track}${note}</div>
     <span class="badge ${seen?'d':'w'}">${seen?'✓':'want'}</span>
   </div>${preview?'<div class="bar"><div class="prog"></div></div>':''}`;
   
@@ -144,12 +140,6 @@ async function init(){
   });
 }
 
-function fi(v,btn){
-  document.querySelectorAll('.fl button').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  ['ws','wg'].forEach(id=>document.getElementById(id).style.display=v==='seen'?'none':'');
-  ['ss','sg'].forEach(id=>document.getElementById(id).style.display=v==='want'?'none':'');
-}
 
 init();
 </script>
