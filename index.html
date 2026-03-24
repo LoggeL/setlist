@@ -54,6 +54,10 @@ header p{color:var(--muted);margin-top:8px;font-size:.9rem;letter-spacing:.5px}
 .badge.d{background:var(--green);color:#000}
 .bar{height:2px;background:rgba(255,255,255,.06);margin:0 16px 12px;border-radius:1px;overflow:hidden}
 .prog{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:1px;transition:width .1s}
+.vol{display:flex;align-items:center;gap:8px;margin-top:4px}
+.vol input[type=range]{-webkit-appearance:none;width:80px;height:4px;background:#333;border-radius:2px;outline:none}
+.vol input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer}
+.vol span{font-size:.7rem;color:var(--muted);width:20px;text-align:center}
 footer{text-align:center;padding:60px 20px 40px;color:#333;font-size:.7rem;letter-spacing:1px;text-transform:uppercase}
 @media(max-width:640px){.g{grid-template-columns:1fr}h1{font-size:2rem}.st .nm{font-size:1.6rem}.st{gap:24px}}
 </style>
@@ -67,6 +71,11 @@ footer{text-align:center;padding:60px 20px 40px;color:#333;font-size:.7rem;lette
 <div><div class="nm" id="wc">-</div><div class="lb">Bucket List</div></div>
 <div><div class="nm s" id="sc">-</div><div class="lb">Erlebt ✓</div></div>
 <div><div class="nm" id="tc">-</div><div class="lb">Total</div></div>
+</div>
+<div class="vol" style="justify-content:center;margin-top:16px">
+<span>🔈</span>
+<input type="range" id="vol" min="0" max="1" step="0.05" value="0.7" oninput="if(au)au.volume=this.value">
+<span>🔊</span>
 </div>
 </header>
 <div class="fl">
@@ -108,7 +117,7 @@ function mkCard(b,seen,dz,i){
       const bar=el.querySelector('.prog');
       au.ontimeupdate=()=>{if(bar&&au.duration)bar.style.width=(au.currentTime/au.duration*100)+'%'};
       au.onended=()=>{el.classList.remove('playing');if(bar)bar.style.width='0';cur=null};
-      au.play();
+      au.volume=parseFloat(document.getElementById('vol').value);au.play();
     };
   }
   return el;
