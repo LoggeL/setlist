@@ -124,14 +124,6 @@
       "track": "Zwanzig"
     },
     {
-      "name": "Bruchbude",
-      "genre": "Punk",
-      "deezer": "0Fp9pg7U4Rwq8nYup2wxig",
-      "img": "https://cdn-images.dzcdn.net/images/artist/ca9d8beeec00711509dda496875174ee/250x250-000000-80-0-0.jpg",
-      "trackTitle": "abgefucked",
-      "preview": "previews/Bruchbude.mp3?v=1774311427"
-    },
-    {
       "name": "Paula Hartmann",
       "genre": "Pop/R&B",
       "deezer": "6gU2lzMPisjOmHlEN9FFJX",
@@ -232,7 +224,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/fdcb8a8f66feb8260ba20cd195c02b77/250x250-000000-80-0-0.jpg",
       "trackTitle": "Fallen in Liebe",
       "preview": "previews/Kraftklub.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "Swiss & Die Andern",
@@ -240,7 +232,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/0b4f211d749fe944d984939dfab30d6d/250x250-000000-80-0-0.jpg",
       "trackTitle": "Besteste Band",
       "preview": "previews/Swiss-&-Die-Andern.mp3?v=1774341505",
-      "note": ""
+      "note": "Southside, 2025"
     },
     {
       "name": "Electric Callboy",
@@ -249,7 +241,7 @@
       "trackTitle": "Pump It",
       "preview": "previews/Electric-Callboy.mp3?v=1774311427",
       "track": "Pump It",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "Three Days Grace",
@@ -257,7 +249,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/2ffbb6971279cc57ba1c029178ac6ed3/250x250-000000-80-0-0.jpg",
       "trackTitle": "Animal I Have Become",
       "preview": "previews/Three-Days-Grace.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "KIZ",
@@ -265,7 +257,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/77e230736a2e0d7e71b17bc119374887/250x250-000000-80-0-0.jpg",
       "trackTitle": "Hurra die Welt geht unter",
       "preview": "previews/KIZ.mp3?v=1774311427",
-      "note": ""
+      "note": "Frankfurt, 29.03.2025"
     },
     {
       "name": "Bring me the Horizon",
@@ -273,7 +265,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/d159e783c1f419ae27fd2deca5b89b54/250x250-000000-80-0-0.jpg",
       "trackTitle": "Can You Feel My Heart",
       "preview": "previews/Bring-me-the-Horizon.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "Blond",
@@ -282,7 +274,7 @@
       "trackTitle": "SB-Kassen Lover",
       "preview": "previews/Blond.mp3?v=1774311427",
       "track": "SB Kassen Lover",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Provinz",
@@ -290,7 +282,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/4e4c155cecfa1069b573ca387921c108/250x250-000000-80-0-0.jpg",
       "trackTitle": "Walzer",
       "preview": "previews/Provinz.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Donots",
@@ -298,7 +290,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/3f943b4dc522a6e9cfbbc2a03fba465b/250x250-000000-80-0-0.jpg",
       "trackTitle": "We're Not Gonna Take It",
       "preview": "previews/Donots.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "Engst",
@@ -306,7 +298,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/b82476c0f2d40f0baa2a99760e5b93ca/250x250-000000-80-0-0.jpg",
       "trackTitle": "Herr Meier Von Der AFD",
       "preview": "previews/Engst.mp3?v=1774311427",
-      "note": ""
+      "note": "Frankfurt, 07.12.2025"
     },
     {
       "name": "Drei Meter Feldweg",
@@ -314,7 +306,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/2cfb09a0886cbd3d992ec21ebc0a0d6e/250x250-000000-80-0-0.jpg",
       "trackTitle": "Gib niemals auf",
       "preview": "previews/Drei-Meter-Feldweg.mp3?v=1774311427",
-      "note": ""
+      "note": "Southside, 2025"
     },
     {
       "name": "Hollywood Undead",
@@ -322,7 +314,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/920d4b693287873a8d2b3c934ba9b241/250x250-000000-80-0-0.jpg",
       "trackTitle": "1x1",
       "preview": "previews/Hollywood-Undead.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "FiNCH",
@@ -330,7 +322,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/cebcc30407bce0281be418932dcf1b59/250x250-000000-80-0-0.jpg",
       "trackTitle": "LiEBE AUF DER RÜCKBANK",
       "preview": "previews/FiNCH.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Raum27",
@@ -338,7 +330,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/49331cf62f20285b686231909743d539/250x250-000000-80-0-0.jpg",
       "trackTitle": "Bitte bitte",
       "preview": "previews/Raum27.mp3?v=1774311427",
-      "note": ""
+      "note": "Kaiserslautern, 17.12.2025"
     },
     {
       "name": "Kaffkiez",
@@ -346,7 +338,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/8672b73b973e94ecd40effff48bc6f79/250x250-000000-80-0-0.jpg",
       "trackTitle": "Nie Allein",
       "preview": "previews/Kaffkiez.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Querbeat",
@@ -354,7 +346,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/b0d7f286df68f6a356aaa96976e2bb86/250x250-000000-80-0-0.jpg",
       "trackTitle": "Nie mehr Fastelovend",
       "preview": "previews/Querbeat.mp3?v=1774311427",
-      "note": ""
+      "note": "Southside, 2025"
     },
     {
       "name": "From Fall to Spring",
@@ -362,7 +354,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/f8d31120d99c7f7ae63a659182337d52/250x250-000000-80-0-0.jpg",
       "trackTitle": "CONTROL",
       "preview": "previews/From-Fall-to-Spring.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "SDP",
@@ -370,7 +362,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/332d34f3dfffecd42425b31d21744b97/250x250-000000-80-0-0.jpg",
       "trackTitle": "Mama hat gesagt",
       "preview": "previews/SDP.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Peter Fox",
@@ -378,7 +370,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/fb63de1f383c440f2105fc184c58ee1d/250x250-000000-80-0-0.jpg",
       "trackTitle": "Alles neu",
       "preview": "previews/Peter-Fox.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Bluthund",
@@ -386,7 +378,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/b0b25a88620c56560c7232e7e0140bea/250x250-000000-80-0-0.jpg",
       "trackTitle": "Leute",
       "preview": "previews/Bluthund.mp3?v=1774311427",
-      "note": ""
+      "note": "Southside, 2025"
     },
     {
       "name": "Don't Tell the Others",
@@ -400,7 +392,7 @@
       "trackTitle": "Frankfurt Oder (Single Version)",
       "preview": "previews/Bosse.mp3?v=1774311427",
       "track": "Frankfurt Oder",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Von wegen Lisbeth",
@@ -408,7 +400,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/f0b76fe3003da5aa5e7500861b63d593/250x250-000000-80-0-0.jpg",
       "trackTitle": "Wenn du tanzt",
       "preview": "previews/Von-wegen-Lisbeth.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Ok.danke.tschüss",
@@ -416,7 +408,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/5a56be1008d5ba9c8037737fefbfd5f8/250x250-000000-80-0-0.jpg",
       "trackTitle": "Joel",
       "preview": "previews/Ok.danke.tschüss.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "ENNIO",
@@ -425,7 +417,7 @@
       "trackTitle": "Wand",
       "preview": "previews/ENNIO.mp3?v=1774311427",
       "track": "Wand",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Madsen",
@@ -433,7 +425,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/473042446d0fd8aa09cb2ba8c3ddbf14/250x250-000000-80-0-0.jpg",
       "trackTitle": "Lass die Musik an",
       "preview": "previews/Madsen.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "Team Scheiße",
@@ -441,7 +433,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/46b8d350b6a4fc7205d759bb80fbda85/250x250-000000-80-0-0.jpg",
       "trackTitle": "Schmetterling",
       "preview": "previews/Team-Scheiße.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Pendulum",
@@ -449,7 +441,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/9b20940c2564f7b0053f8c80bcc80f47/250x250-000000-80-0-0.jpg",
       "trackTitle": "Sound of You",
       "preview": "previews/Pendulum.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "Against the Current",
@@ -457,7 +449,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/39621dce16e1afbbb3bd7198392ffd20/250x250-000000-80-0-0.jpg",
       "trackTitle": "Legends Never Die",
       "preview": "previews/Against-the-Current.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "Betontod",
@@ -465,7 +457,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/87ff9ceb3f3a09e15f496a5c0b502956/250x250-000000-80-0-0.jpg",
       "trackTitle": "Traum von Freiheit",
       "preview": "previews/Betontod.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "Skindred",
@@ -473,7 +465,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/fd5d68eca2301cb49defc3a14561c693/250x250-000000-80-0-0.jpg",
       "trackTitle": "Nobody",
       "preview": "previews/Skindred.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring, 2023"
     },
     {
       "name": "Yu",
@@ -481,7 +473,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/486e11229a2f72f26682bc9f32e2d7f7/250x250-000000-80-0-0.jpg",
       "trackTitle": "Angst",
       "preview": "previews/Yu.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Tream",
@@ -489,7 +481,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/9afed7d13bf7ae58dfdd639bd25f0ac1/250x250-000000-80-0-0.jpg",
       "trackTitle": "HASENJAGD",
       "preview": "previews/Tream.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "The Butcher Sisters",
@@ -497,7 +489,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/a6a2bdbd07306d14fc7318af7a9b3800/250x250-000000-80-0-0.jpg",
       "trackTitle": "Ü30",
       "preview": "previews/The-Butcher-Sisters.mp3?v=1774311427",
-      "note": ""
+      "note": "Mannheim, 18.10.2024"
     },
     {
       "name": "Ritter Lean",
@@ -505,7 +497,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/22057b3a8e372b839e73d6711d15d7bd/250x250-000000-80-0-0.jpg",
       "trackTitle": "Outfit Check",
       "preview": "previews/Ritter-Lean.mp3?v=1774311427",
-      "note": ""
+      "note": "Kaiserslautern, 23.03.2025"
     },
     {
       "name": "Berq",
@@ -513,7 +505,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/13ad95ad86214952e16c734ed07512a7/250x250-000000-80-0-0.jpg",
       "trackTitle": "Rote Flaggen",
       "preview": "previews/Berq.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
     },
     {
       "name": "Zartmann",
@@ -521,7 +513,16 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/3aef25e99767aeeffca7616dd872ce9e/250x250-000000-80-0-0.jpg",
       "trackTitle": "tau mich auf",
       "preview": "previews/Zartmann.mp3?v=1774311427",
-      "note": ""
+      "note": "Rock am Ring / Southside, 2025"
+    },
+    {
+      "name": "Bruchbude",
+      "genre": "Punk",
+      "deezer": "0Fp9pg7U4Rwq8nYup2wxig",
+      "img": "https://cdn-images.dzcdn.net/images/artist/ca9d8beeec00711509dda496875174ee/250x250-000000-80-0-0.jpg",
+      "trackTitle": "abgefucked",
+      "preview": "previews/Bruchbude.mp3?v=1774311427",
+      "note": "Alte Feuerwache Mannheim, 28.03.2025"
     }
   ]
 }
