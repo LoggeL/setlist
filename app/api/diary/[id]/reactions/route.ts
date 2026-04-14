@@ -12,7 +12,7 @@ export async function POST(
   }
 
   const body = await req.json();
-  const { emoji } = body;
+  const { emoji, reactor_name = 'anonymous' } = body;
 
   const allowedEmojis = ['🔥', '❤️', '🎸', '🤘', '💜', '🎵'];
   if (!emoji || !allowedEmojis.includes(emoji)) {
@@ -25,9 +25,21 @@ export async function POST(
     return NextResponse.json({ error: 'Entry not found' }, { status: 404 });
   }
 
-  db.prepare(
-    'INSERT INTO reactions (diary_entry_id, emoji, reactor_name) VALUES (?, ?, ?)'
-  ).run(entryId, emoji, 'anonymous');
+  const existing = db.prepare(
+    'SELECT id, emoji FROM reactions WHERE diary_entry_id = ? AND reactor_name = ?'
+  ).get(entryId, reactor_name) as { id: number; emoji: string } | undefined;
+
+  if (existing) {
+    if (existing.emoji === emoji) {
+      db.prepare('DELETE FROM reactions WHERE id = ?').run(existing.id);
+    } else {
+      db.prepare('UPDATE reactions SET emoji = ? WHERE id = ?').run(emoji, existing.id);
+    }
+  } else {
+    db.prepare(
+      'INSERT INTO reactions (diary_entry_id, emoji, reactor_name) VALUES (?, ?, ?)'
+    ).run(entryId, emoji, reactor_name);
+  }
 
   const reactions = db
     .prepare('SELECT * FROM reactions WHERE diary_entry_id = ?')

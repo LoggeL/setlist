@@ -78,6 +78,7 @@ function initSchema(db: Database.Database) {
     CREATE INDEX IF NOT EXISTS idx_live_user ON live_events(user_id);
     CREATE INDEX IF NOT EXISTS idx_wishlist_user ON wishlist(user_id);
     CREATE INDEX IF NOT EXISTS idx_reactions_entry ON reactions(diary_entry_id);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_reactions_unique ON reactions(diary_entry_id, reactor_name);
   `);
 }
 

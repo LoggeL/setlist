@@ -8,6 +8,9 @@ type DiaryWithReactions = DiaryEntry & { reactions: Reaction[] };
 
 type Tab = 'overview' | 'diary' | 'live' | 'wishlist';
 
+const CURRENT_USER_ID = 1;
+const CURRENT_REACTOR = 'logge';
+
 function hue(name: string): number {
   let h = 0;
   for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) % 360;
@@ -122,18 +125,22 @@ function ReactionBar({
 
   const grouped = emojis.reduce(
     (acc, e) => {
-      const count = reactions.filter((r) => r.emoji === e).length;
-      if (count > 0) acc[e] = count;
+      const matching = reactions.filter((r) => r.emoji === e);
+      if (matching.length > 0) {
+        acc[e] = { count: matching.length, names: matching.map((r) => r.reactor_name) };
+      }
       return acc;
     },
-    {} as Record<string, number>
+    {} as Record<string, { count: number; names: string[] }>
   );
+
+  const myReaction = reactions.find((r) => r.reactor_name === CURRENT_REACTOR)?.emoji;
 
   async function addReaction(emoji: string) {
     const res = await fetch(`/api/diary/${entryId}/reactions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ emoji }),
+      body: JSON.stringify({ emoji, reactor_name: CURRENT_REACTOR }),
     });
     if (res.ok) {
       const updated = await res.json();
@@ -143,19 +150,26 @@ function ReactionBar({
 
   return (
     <div className="flex items-center gap-1 flex-wrap">
-      {emojis.map((emoji) => (
-        <button
-          key={emoji}
-          onClick={() => addReaction(emoji)}
-          className={`text-xs px-2 py-0.5 rounded-full transition-colors ${
-            grouped[emoji]
-              ? 'bg-white/10 hover:bg-white/20'
-              : 'bg-transparent hover:bg-white/5 opacity-40 hover:opacity-70'
-          }`}
-        >
-          {emoji} {grouped[emoji] ? grouped[emoji] : ''}
-        </button>
-      ))}
+      {emojis.map((emoji) => {
+        const data = grouped[emoji];
+        const isMyReaction = myReaction === emoji;
+        return (
+          <button
+            key={emoji}
+            onClick={() => addReaction(emoji)}
+            className={`text-xs px-2 py-0.5 rounded-full transition-colors ${
+              isMyReaction
+                ? 'bg-pink/20 ring-1 ring-pink/40'
+                : data
+                  ? 'bg-white/10 hover:bg-white/20'
+                  : 'bg-transparent hover:bg-white/5 opacity-40 hover:opacity-70'
+            }`}
+            title={data ? data.names.join(', ') : ''}
+          >
+            {emoji} {data ? data.count : ''}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -199,6 +213,134 @@ function DiaryEntryCard({ entry }: { entry: DiaryWithReactions }) {
   );
 }
 
+/* ─── Deezer Search Types ─── */
+
+type DeezerArtist = {
+  id: number;
+  name: string;
+  picture_medium: string;
+};
+
+type DeezerTrack = {
+  id: number;
+  title: string;
+  preview: string;
+  artist: { name: string; picture_medium: string };
+  album: { title: string };
+};
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
+
+function ArtistSearch({ onSelect }: { onSelect: (artist: DeezerArtist) => void }) {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<DeezerArtist[]>([]);
+  const [open, setOpen] = useState(false);
+  const debouncedQuery = useDebounce(query, 300);
+
+  useEffect(() => {
+    if (debouncedQuery.length < 2) {
+      setResults([]);
+      return;
+    }
+    fetch(`/api/deezer/search?q=${encodeURIComponent(debouncedQuery)}&type=artist`)
+      .then((r) => r.json())
+      .then((data) => {
+        setResults(data);
+        setOpen(true);
+      });
+  }, [debouncedQuery]);
+
+  return (
+    <div className="relative">
+      <input
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onFocus={() => results.length > 0 && setOpen(true)}
+        placeholder="Search artist (Deezer) *"
+        className="w-full bg-bg rounded-lg px-3 py-2 text-sm border border-border focus:border-pink outline-none"
+      />
+      {open && results.length > 0 && (
+        <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-bg-card border border-border rounded-lg shadow-xl max-h-60 overflow-y-auto">
+          {results.map((a) => (
+            <button
+              key={a.id}
+              type="button"
+              className="w-full flex items-center gap-3 px-3 py-2 hover:bg-bg-hover transition-colors text-left"
+              onClick={() => {
+                onSelect(a);
+                setQuery(a.name);
+                setOpen(false);
+              }}
+            >
+              <img src={a.picture_medium} alt={a.name} className="w-8 h-8 rounded-full object-cover" />
+              <span className="text-sm truncate">{a.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function TrackSearch({ artistName, onSelect }: { artistName: string; onSelect: (track: DeezerTrack) => void }) {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<DeezerTrack[]>([]);
+  const [open, setOpen] = useState(false);
+  const debouncedQuery = useDebounce(query, 300);
+
+  useEffect(() => {
+    if (!artistName) return;
+    const q = debouncedQuery.length >= 2 ? `${artistName} ${debouncedQuery}` : artistName;
+    if (q.length < 2) return;
+    fetch(`/api/deezer/search?q=${encodeURIComponent(q)}&type=track`)
+      .then((r) => r.json())
+      .then((data) => {
+        setResults(data);
+        if (debouncedQuery.length >= 2) setOpen(true);
+      });
+  }, [artistName, debouncedQuery]);
+
+  return (
+    <div className="relative">
+      <input
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onFocus={() => results.length > 0 && setOpen(true)}
+        placeholder="Search track title *"
+        className="w-full bg-bg rounded-lg px-3 py-2 text-sm border border-border focus:border-pink outline-none"
+      />
+      {open && results.length > 0 && (
+        <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-bg-card border border-border rounded-lg shadow-xl max-h-60 overflow-y-auto">
+          {results.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              className="w-full flex items-center gap-3 px-3 py-2 hover:bg-bg-hover transition-colors text-left"
+              onClick={() => {
+                onSelect(t);
+                setQuery(t.title);
+                setOpen(false);
+              }}
+            >
+              <div className="min-w-0">
+                <span className="text-sm truncate block">{t.title}</span>
+                <span className="text-xs text-text-muted truncate block">{t.album.title}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function AddDiaryForm({
   username,
   onAdded,
@@ -208,28 +350,69 @@ function AddDiaryForm({
 }) {
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [selectedArtist, setSelectedArtist] = useState<DeezerArtist | null>(null);
+  const [formData, setFormData] = useState({
+    artist_name: '',
+    artist_img: '',
+    track_title: '',
+    genre: '',
+    preview_url: '',
+    note: '',
+    mood: '',
+    listened_at: new Date().toISOString().split('T')[0],
+  });
+
+  function handleArtistSelect(artist: DeezerArtist) {
+    setSelectedArtist(artist);
+    setFormData((prev) => ({
+      ...prev,
+      artist_name: artist.name,
+      artist_img: artist.picture_medium,
+    }));
+  }
+
+  function handleTrackSelect(track: DeezerTrack) {
+    setFormData((prev) => ({
+      ...prev,
+      track_title: track.title,
+      preview_url: track.preview || '',
+    }));
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!formData.artist_name || !formData.track_title || !formData.listened_at) return;
     setSaving(true);
-    const form = new FormData(e.currentTarget);
     const res = await fetch('/api/diary', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username,
-        artist_name: form.get('artist_name'),
-        track_title: form.get('track_title'),
-        genre: form.get('genre') || null,
-        note: form.get('note') || null,
-        mood: form.get('mood') || null,
-        listened_at: form.get('listened_at'),
+        artist_name: formData.artist_name,
+        artist_img: formData.artist_img || null,
+        track_title: formData.track_title,
+        genre: formData.genre || null,
+        preview_url: formData.preview_url || null,
+        note: formData.note || null,
+        mood: formData.mood || null,
+        listened_at: formData.listened_at,
       }),
     });
     if (res.ok) {
       const entry = await res.json();
       onAdded({ ...entry, reactions: [] });
       setOpen(false);
+      setSelectedArtist(null);
+      setFormData({
+        artist_name: '',
+        artist_img: '',
+        track_title: '',
+        genre: '',
+        preview_url: '',
+        note: '',
+        mood: '',
+        listened_at: new Date().toISOString().split('T')[0],
+      });
     }
     setSaving(false);
   }
@@ -248,28 +431,54 @@ function AddDiaryForm({
 
   return (
     <form onSubmit={handleSubmit} className="glass rounded-xl p-4 space-y-3 animate-fade-in">
+      {selectedArtist && (
+        <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg">
+          <img src={selectedArtist.picture_medium} alt={selectedArtist.name} className="w-10 h-10 rounded-full object-cover" />
+          <div>
+            <span className="text-sm font-semibold">{selectedArtist.name}</span>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedArtist(null);
+                setFormData((prev) => ({ ...prev, artist_name: '', artist_img: '' }));
+              }}
+              className="text-xs text-text-muted ml-2 hover:text-pink"
+            >
+              change
+            </button>
+          </div>
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-3">
-        <input
-          name="artist_name"
-          placeholder="Artist name *"
-          required
-          className="bg-bg rounded-lg px-3 py-2 text-sm border border-border focus:border-pink outline-none"
-        />
-        <input
-          name="track_title"
-          placeholder="Track title *"
-          required
-          className="bg-bg rounded-lg px-3 py-2 text-sm border border-border focus:border-pink outline-none"
-        />
+        {!selectedArtist ? (
+          <ArtistSearch onSelect={handleArtistSelect} />
+        ) : (
+          <input type="hidden" value={formData.artist_name} />
+        )}
+        {selectedArtist ? (
+          <div className={selectedArtist ? 'col-span-2 sm:col-span-1' : ''}>
+            <TrackSearch artistName={formData.artist_name} onSelect={handleTrackSelect} />
+          </div>
+        ) : (
+          <input
+            value={formData.track_title}
+            onChange={(e) => setFormData((prev) => ({ ...prev, track_title: e.target.value }))}
+            placeholder="Track title *"
+            required
+            className="bg-bg rounded-lg px-3 py-2 text-sm border border-border focus:border-pink outline-none"
+          />
+        )}
       </div>
       <div className="grid grid-cols-3 gap-3">
         <input
-          name="genre"
+          value={formData.genre}
+          onChange={(e) => setFormData((prev) => ({ ...prev, genre: e.target.value }))}
           placeholder="Genre"
           className="bg-bg rounded-lg px-3 py-2 text-sm border border-border focus:border-pink outline-none"
         />
         <select
-          name="mood"
+          value={formData.mood}
+          onChange={(e) => setFormData((prev) => ({ ...prev, mood: e.target.value }))}
           className="bg-bg rounded-lg px-3 py-2 text-sm border border-border focus:border-pink outline-none text-text-muted"
         >
           <option value="">Mood</option>
@@ -281,18 +490,25 @@ function AddDiaryForm({
           <option value="reflective">Reflective</option>
         </select>
         <input
-          name="listened_at"
+          value={formData.listened_at}
+          onChange={(e) => setFormData((prev) => ({ ...prev, listened_at: e.target.value }))}
           type="date"
           required
-          defaultValue={new Date().toISOString().split('T')[0]}
           className="bg-bg rounded-lg px-3 py-2 text-sm border border-border focus:border-pink outline-none"
         />
       </div>
       <input
-        name="note"
+        value={formData.note}
+        onChange={(e) => setFormData((prev) => ({ ...prev, note: e.target.value }))}
         placeholder="How does it make you feel? (optional)"
         className="w-full bg-bg rounded-lg px-3 py-2 text-sm border border-border focus:border-pink outline-none"
       />
+      {formData.preview_url && (
+        <div className="flex items-center gap-2 text-xs text-text-muted">
+          <AudioButton src={formData.preview_url} />
+          <span>Preview attached</span>
+        </div>
+      )}
       <div className="flex gap-2 justify-end">
         <button
           type="button"
@@ -410,6 +626,64 @@ function DiaryTab({ diary, username }: { diary: DiaryWithReactions[]; username: 
   );
 }
 
+function AddToWishlistButton({ artist_name, artist_img, genre, track_title, preview_url }: {
+  artist_name: string;
+  artist_img: string | null;
+  genre: string | null;
+  track_title: string | null;
+  preview_url: string | null;
+}) {
+  const [status, setStatus] = useState<'idle' | 'saving' | 'done' | 'exists'>('idle');
+
+  async function handleAdd() {
+    setStatus('saving');
+    const res = await fetch('/api/wishlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: CURRENT_USER_ID, artist_name, artist_img, genre, track_title, preview_url }),
+    });
+    if (res.status === 409) {
+      setStatus('exists');
+    } else if (res.ok) {
+      setStatus('done');
+    } else {
+      setStatus('idle');
+    }
+  }
+
+  if (status === 'done') {
+    return (
+      <span className="text-[0.65rem] text-green flex items-center gap-0.5">
+        <span className="material-symbols-outlined text-sm">check</span>
+        Added
+      </span>
+    );
+  }
+
+  if (status === 'exists') {
+    return (
+      <span className="text-[0.65rem] text-text-muted flex items-center gap-0.5">
+        <span className="material-symbols-outlined text-sm">check</span>
+        In wishlist
+      </span>
+    );
+  }
+
+  return (
+    <button
+      onClick={handleAdd}
+      disabled={status === 'saving'}
+      className="text-[0.65rem] text-cyan hover:text-white flex items-center gap-0.5 transition-colors disabled:opacity-50"
+      title="Add to my wishlist"
+    >
+      <span className="material-symbols-outlined text-sm">
+        {status === 'saving' ? 'hourglass_empty' : 'playlist_add'}
+      </span>
+      {status === 'saving' ? 'Adding...' : 'Wishlist'}
+    </button>
+  );
+}
+
 function LiveTab({ live }: { live: LiveEvent[] }) {
   return (
     <div className="space-y-3">
@@ -428,6 +702,13 @@ function LiveTab({ live }: { live: LiveEvent[] }) {
                   )}
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
+                  <AddToWishlistButton
+                    artist_name={event.artist_name}
+                    artist_img={event.artist_img}
+                    genre={event.genre}
+                    track_title={event.track_title}
+                    preview_url={event.preview_url}
+                  />
                   <span className="text-[0.65rem] font-bold text-green bg-green/10 px-2 py-0.5 rounded-full uppercase">
                     Seen
                   </span>
@@ -460,46 +741,155 @@ function LiveTab({ live }: { live: LiveEvent[] }) {
   );
 }
 
-function WishlistTab({ wishlist }: { wishlist: WishlistItem[] }) {
+function WishlistTab({ wishlist, userId }: { wishlist: WishlistItem[]; userId: number }) {
+  const [showCompare, setShowCompare] = useState(false);
+  const [compareUserId, setCompareUserId] = useState('');
+  const [compareResult, setCompareResult] = useState<{
+    user: { username: string; display_name: string | null };
+    otherUser: { username: string; display_name: string | null };
+    myWishlist: WishlistItem[];
+    otherWishlist: WishlistItem[];
+    matches: WishlistItem[];
+  } | null>(null);
+  const [compareLoading, setCompareLoading] = useState(false);
+  const [compareError, setCompareError] = useState('');
+
+  async function handleCompare() {
+    const otherId = parseInt(compareUserId, 10);
+    if (isNaN(otherId)) {
+      setCompareError('Enter a valid user ID');
+      return;
+    }
+    setCompareLoading(true);
+    setCompareError('');
+    const res = await fetch(`/api/wishlist/compare?userId=${userId}&otherUserId=${otherId}`);
+    if (res.ok) {
+      const data = await res.json();
+      setCompareResult(data);
+    } else {
+      const err = await res.json();
+      setCompareError(err.error || 'Failed to compare');
+    }
+    setCompareLoading(false);
+  }
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      {wishlist.map((item) => (
-        <div key={item.id} className="glass rounded-xl p-4 animate-fade-in hover:bg-bg-hover transition-colors group">
-          <div className="flex gap-3">
-            <ArtistAvatar name={item.artist_name} img={item.artist_img} size={64} />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <h3 className="font-bold text-sm truncate">{item.artist_name}</h3>
-                  {item.genre && (
-                    <span className="text-[0.65rem] text-text-muted bg-white/5 px-2 py-0.5 rounded-full inline-block mt-0.5">
-                      {item.genre}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[0.65rem] font-bold text-pink bg-pink/10 px-2 py-0.5 rounded-full uppercase shrink-0">
-                  Want
-                </span>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div />
+        <button
+          onClick={() => setShowCompare(!showCompare)}
+          className="flex items-center gap-1.5 text-sm text-cyan hover:text-white transition-colors"
+        >
+          <span className="material-symbols-outlined text-lg">compare_arrows</span>
+          Compare with...
+        </button>
+      </div>
+
+      {showCompare && (
+        <div className="glass rounded-xl p-4 space-y-3 animate-fade-in">
+          <div className="flex gap-2">
+            <input
+              value={compareUserId}
+              onChange={(e) => setCompareUserId(e.target.value)}
+              placeholder="Other user ID (e.g. 2)"
+              className="flex-1 bg-bg rounded-lg px-3 py-2 text-sm border border-border focus:border-cyan outline-none"
+            />
+            <button
+              onClick={handleCompare}
+              disabled={compareLoading}
+              className="px-4 py-2 text-sm bg-cyan text-bg-card rounded-lg font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
+            >
+              {compareLoading ? 'Comparing...' : 'Compare'}
+            </button>
+          </div>
+          {compareError && <p className="text-xs text-red-400">{compareError}</p>}
+          {compareResult && (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 text-sm">
+                <span className="font-semibold text-pink">{compareResult.user.display_name || compareResult.user.username}</span>
+                <span className="text-text-muted">vs</span>
+                <span className="font-semibold text-cyan">{compareResult.otherUser.display_name || compareResult.otherUser.username}</span>
               </div>
-              {item.track_title && (
-                <p className="text-xs text-text-muted mt-2 truncate">
-                  <span className="material-symbols-outlined text-sm align-middle mr-0.5">music_note</span>
-                  {item.track_title}
-                </p>
+              {compareResult.matches.length > 0 ? (
+                <div>
+                  <h4 className="text-xs text-text-muted uppercase tracking-wider font-bold mb-2">
+                    Matching Artists ({compareResult.matches.length})
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {compareResult.matches.map((m) => (
+                      <div key={m.id} className="flex items-center gap-2 p-2 bg-green/5 border border-green/20 rounded-lg">
+                        <ArtistAvatar name={m.artist_name} img={m.artist_img} size={32} />
+                        <span className="text-sm font-semibold truncate">{m.artist_name}</span>
+                        <span className="material-symbols-outlined text-green text-sm ml-auto">check_circle</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-xs text-text-muted">No matching artists found</p>
               )}
-              <div className="mt-2">
-                <AudioButton src={item.preview_url} />
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <span className="text-text-muted">Your wishlist: </span>
+                  <span className="font-bold">{compareResult.myWishlist.length} artists</span>
+                </div>
+                <div>
+                  <span className="text-text-muted">Their wishlist: </span>
+                  <span className="font-bold">{compareResult.otherWishlist.length} artists</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {wishlist.map((item) => (
+          <div key={item.id} className="glass rounded-xl p-4 animate-fade-in hover:bg-bg-hover transition-colors group">
+            <div className="flex gap-3">
+              <ArtistAvatar name={item.artist_name} img={item.artist_img} size={64} />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-sm truncate">{item.artist_name}</h3>
+                    {item.genre && (
+                      <span className="text-[0.65rem] text-text-muted bg-white/5 px-2 py-0.5 rounded-full inline-block mt-0.5">
+                        {item.genre}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[0.65rem] font-bold text-pink bg-pink/10 px-2 py-0.5 rounded-full uppercase shrink-0">
+                    Want
+                  </span>
+                </div>
+                {item.track_title && (
+                  <p className="text-xs text-text-muted mt-2 truncate">
+                    <span className="material-symbols-outlined text-sm align-middle mr-0.5">music_note</span>
+                    {item.track_title}
+                  </p>
+                )}
+                <div className="flex items-center justify-between mt-2">
+                  <AudioButton src={item.preview_url} />
+                  <AddToWishlistButton
+                    artist_name={item.artist_name}
+                    artist_img={item.artist_img}
+                    genre={item.genre}
+                    track_title={item.track_title}
+                    preview_url={item.preview_url}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
-      {wishlist.length === 0 && (
-        <div className="col-span-full text-center text-text-muted py-12">
-          <span className="material-symbols-outlined text-4xl mb-2 block">favorite</span>
-          <p className="text-sm">Wishlist is empty</p>
-        </div>
-      )}
+        ))}
+        {wishlist.length === 0 && (
+          <div className="col-span-full text-center text-text-muted py-12">
+            <span className="material-symbols-outlined text-4xl mb-2 block">favorite</span>
+            <p className="text-sm">Wishlist is empty</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -546,7 +936,7 @@ export default function ProfileClient({
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 pb-24 md:pb-8">
+    <div className="max-w-5xl mx-auto px-4 pb-24 md:pb-8">
       {/* Header */}
       <header className="pt-6 pb-4">
         <div className="flex items-center gap-2 mb-6">
@@ -597,7 +987,7 @@ export default function ProfileClient({
         )}
         {activeTab === 'diary' && <DiaryTab diary={diary} username={user.username} />}
         {activeTab === 'live' && <LiveTab live={live} />}
-        {activeTab === 'wishlist' && <WishlistTab wishlist={wishlist} />}
+        {activeTab === 'wishlist' && <WishlistTab wishlist={wishlist} userId={user.id} />}
       </main>
 
       {/* Mobile Bottom Nav */}
