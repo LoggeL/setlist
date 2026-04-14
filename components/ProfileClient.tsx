@@ -59,10 +59,22 @@ function AudioButton({ src }: { src: string | null }) {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  // Global volume sync
+  useEffect(() => {
+    function onVolume(e: Event) {
+      const v = (e as CustomEvent).detail as number;
+      if (audioRef.current) audioRef.current.volume = v;
+    }
+    window.addEventListener('setlist-volume-change', onVolume);
+    return () => window.removeEventListener('setlist-volume-change', onVolume);
+  }, []);
+
   const toggle = useCallback(() => {
     if (!src) return;
     if (!audioRef.current) {
       audioRef.current = new Audio(src);
+      const stored = localStorage.getItem('setlist-volume');
+      audioRef.current.volume = stored !== null ? parseFloat(stored) : 0.7;
       audioRef.current.addEventListener('timeupdate', () => {
         if (audioRef.current) {
           setProgress((audioRef.current.currentTime / audioRef.current.duration) * 100);
