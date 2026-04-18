@@ -1,21 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { ArtistSummary } from '@/lib/queries';
 
 /**
- * Two-position toggle: WILL SEHEN ↔ GESEHEN. "Seen" wins when the band is
- * both wishlisted and has live events. Clicking the inactive half switches
- * state; clicking the active half is a no-op.
+ * Single toggle chip. Shows the current state ("Will sehen" / "Gesehen")
+ * and flips to the other one on click. Optimistic: the UI updates
+ * immediately, server calls happen in the background, and props from the
+ * next server refresh reconcile the state.
  */
 export default function BandStatusToggles({ artist }: { artist: ArtistSummary }) {
   const router = useRouter();
-  const [busy, setBusy] = useState(false);
+  const serverSeen = artist.live_events.length > 0;
+  const serverCount = artist.live_events.length;
 
-  const seen = artist.live_events.length > 0;
-  const seenCount = artist.live_events.length;
-  const want = !seen && artist.wishlist_id !== null;
+  // Pending override: null means "trust the server", true/false means "we
+  // just clicked and haven't seen fresh props yet".
+  const [pendingSeen, setPendingSeen] = useState<boolean | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  // Drop the override as soon as the server-side data matches our intent.
+  useEffect(() => {
+    if (pendingSeen === null) return;
+    if (serverSeen === pendingSeen) setPendingSeen(null);
+  }, [serverSeen, pendingSeen]);
+
+  const seen = pendingSeen !== null ? pendingSeen : serverSeen;
+  const showCount = pendingSeen === null && seen && serverCount > 1;
 
   const payload = {
     artist_name: artist.artist_name,
@@ -26,85 +39,84 @@ export default function BandStatusToggles({ artist }: { artist: ArtistSummary })
     preview_url: artist.preview_url,
   };
 
-  async function setWant() {
-    if (want || busy) return;
+  async function flip() {
+    if (busy) return;
+    const nextSeen = !seen;
+    setPendingSeen(nextSeen); // optimistic
+    setFailed(false);
     setBusy(true);
-    // Remove any live_events first, then ensure a wishlist row exists.
-    if (seen) {
-      await fetch('/api/live', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ artist_name: artist.artist_name }),
-      });
-    }
-    if (!artist.wishlist_id) {
-      await fetch('/api/wishlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-    }
-    setBusy(false);
-    router.refresh();
-  }
 
-  async function setSeen() {
-    if (seen || busy) return;
-    setBusy(true);
-    // Mark as seen by creating a live_event with today's date; drop the
-    // redundant wishlist row so the card shows one clean state.
-    await fetch('/api/live', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...payload,
-        event_date: new Date().toISOString().slice(0, 10),
-      }),
-    });
-    if (artist.wishlist_id) {
-      await fetch('/api/wishlist', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ artist_name: artist.artist_name }),
-      });
+    try {
+      if (nextSeen) {
+        // want → seen
+        const posts: Promise<Response>[] = [
+          fetch('/api/live', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ...payload,
+              event_date: new Date().toISOString().slice(0, 10),
+            }),
+          }),
+        ];
+        if (artist.wishlist_id) {
+          posts.push(
+            fetch('/api/wishlist', {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ artist_name: artist.artist_name }),
+            })
+          );
+        }
+        const results = await Promise.all(posts);
+        if (results.some((r) => !r.ok)) throw new Error('server rejected');
+      } else {
+        // seen → want
+        const posts: Promise<Response>[] = [
+          fetch('/api/live', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ artist_name: artist.artist_name }),
+          }),
+        ];
+        if (!artist.wishlist_id) {
+          posts.push(
+            fetch('/api/wishlist', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            })
+          );
+        }
+        const results = await Promise.all(posts);
+        // POST /api/wishlist 409s if the row already exists — treat as ok.
+        if (results.some((r) => !r.ok && r.status !== 409)) throw new Error('server rejected');
+      }
+      router.refresh();
+    } catch {
+      setPendingSeen(null); // revert
+      setFailed(true);
+    } finally {
+      setBusy(false);
     }
-    setBusy(false);
-    router.refresh();
   }
-
-  const base =
-    'mono text-[0.68rem] uppercase tracking-[0.04em] py-1 px-2 leading-none border border-rule-strong transition-colors disabled:opacity-50';
 
   return (
-    <div className="inline-flex mt-2 rounded-[4px] overflow-hidden">
-      <button
-        type="button"
-        onClick={setWant}
-        disabled={busy || want}
-        aria-pressed={want}
-        title="Auf die Wunschliste setzen"
-        className={`${base} rounded-l-[3px] ${
-          want
-            ? 'bg-ember text-paper border-ember cursor-default'
-            : 'bg-paper hover:bg-mark-soft cursor-pointer'
-        }`}
-      >
-        {busy && !want ? '…' : 'Will sehen'}
-      </button>
-      <button
-        type="button"
-        onClick={setSeen}
-        disabled={busy || seen}
-        aria-pressed={seen}
-        title="Als live gesehen markieren"
-        className={`${base} -ml-px rounded-r-[3px] ${
-          seen
-            ? 'bg-ink text-paper border-ink cursor-default'
-            : 'bg-paper hover:bg-mark-soft cursor-pointer'
-        }`}
-      >
-        {busy && !seen ? '…' : `Gesehen${seenCount > 1 ? ` ×${seenCount}` : ''}`}
-      </button>
-    </div>
+    <button
+      type="button"
+      onClick={flip}
+      disabled={busy}
+      aria-pressed={seen}
+      title={seen ? 'Auf die Wunschliste zurücklegen' : 'Als live gesehen markieren'}
+      className={`mt-2 mono text-[0.7rem] uppercase tracking-[0.05em] py-1 px-2.5 leading-none border rounded-[4px] transition-colors disabled:opacity-70 cursor-pointer ${
+        seen
+          ? 'bg-ink text-paper border-ink hover:bg-ink-soft'
+          : 'bg-ember text-paper border-ember hover:bg-ember-soft'
+      } ${failed ? 'outline outline-2 outline-ember' : ''}`}
+    >
+      {seen
+        ? `✓ Gesehen${showCount ? ` ×${serverCount}` : ''}`
+        : '◇ Will sehen'}
+    </button>
   );
 }
