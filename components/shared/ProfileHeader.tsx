@@ -17,12 +17,11 @@ export default function ProfileHeader({
   counts: { diary: number; live: number; wishlist: number; artists: number };
   friendCount: number;
   friendState: FriendState;
-  active: 'overview' | 'diary' | 'bands' | 'friends';
+  active: 'overview' | 'bands' | 'friends';
   isOwner?: boolean;
 }) {
   const tabs: { key: typeof active; label: string; href: string }[] = [
     { key: 'overview', label: 'ÜBERSICHT', href: `/@${user.username}` },
-    { key: 'diary', label: `TAGEBUCH · ${counts.diary}`, href: `/@${user.username}/diary` },
     { key: 'bands', label: `BANDS · ${counts.artists}`, href: `/@${user.username}/wishlist` },
     { key: 'friends', label: `FREUNDE · ${friendCount}`, href: `/@${user.username}/friends` },
   ];

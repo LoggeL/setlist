@@ -4,6 +4,7 @@ import { getUserByToken } from '@/lib/auth';
 import { getFeed } from '@/lib/queries';
 import DiaryCard from '@/components/diary/DiaryCard';
 import VolumeControl from '@/components/shared/VolumeControl';
+import AddDiaryForm from '@/components/diary/AddDiaryForm';
 
 const TICKER_WORDS = [
   'seite A',
@@ -59,8 +60,9 @@ export default async function HomePage({
       <section className="pt-8">
         <FeedHeader scope={scopeParam} authed={!!viewer} count={totalTracks} />
 
-        <div className="mt-6">
+        <div className="mt-6 space-y-4">
           <VolumeControl />
+          {viewer && <AddDiaryForm />}
         </div>
 
         {days.length === 0 ? (

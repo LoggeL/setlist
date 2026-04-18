@@ -97,17 +97,14 @@ export default function DiaryCard({
 
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
-            <Link
-              href={`/@${authorUsername}/diary/${entry.id}`}
-              className="min-w-0 group/link"
-            >
-              <h3 className="font-semibold text-[0.88rem] truncate leading-tight group-hover/link:underline decoration-1 underline-offset-4">
+            <div className="min-w-0">
+              <h3 className="font-semibold text-[0.88rem] truncate leading-tight">
                 {entry.track_title}
               </h3>
               <p className="text-[0.78rem] opacity-70 truncate leading-tight mt-0.5">
                 {entry.artist_name}
               </p>
-            </Link>
+            </div>
             <div className="flex items-center gap-1.5 shrink-0">
               {canEdit && !editing && (
                 <>
