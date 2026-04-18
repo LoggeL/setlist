@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import ArtistSearch, { type DeezerArtist } from '@/components/shared/ArtistSearch';
+import SongSearch, { type SongPick } from '@/components/shared/SongSearch';
 
 export default function AddBandForm() {
   const router = useRouter();
@@ -10,20 +10,23 @@ export default function AddBandForm() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  async function addArtist(artist: DeezerArtist) {
+  async function addFromSong(song: SongPick) {
     setError('');
     setSaving(true);
     const res = await fetch('/api/wishlist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        artist_name: artist.name,
-        artist_img: artist.picture_medium || null,
+        artist_name: song.artist_name,
+        artist_img: song.artist_img || null,
+        album_cover_url: song.album_cover_url || null,
+        track_title: song.track_title || null,
+        preview_url: song.preview_url || null,
       }),
     });
     setSaving(false);
+    // 409 = already on wishlist → treat as success for "anlegen" UX
     if (res.ok || res.status === 409) {
-      // 409 = already on wishlist → treat as success for "anlegen" UX
       setOpen(false);
       router.refresh();
     } else {
@@ -60,10 +63,15 @@ export default function AddBandForm() {
         </button>
       </div>
 
-      <ArtistSearch onSelect={addArtist} />
+      <SongSearch
+        onSelect={addFromSong}
+        placeholder="Song suchen — legt Band + Track auf die Wunschliste"
+      />
 
       <p className="mono text-[0.7rem] opacity-65">
-        Lege eine Band auf die Wunschliste. Per Toggle auf der Karte markierst du sie später als gesehen.
+        Such einen repräsentativen Song — Künstler, Cover und 30s-Preview kommen
+        automatisch mit auf die Wunschliste. Per Toggle auf der Karte markierst
+        du die Band später als gesehen.
       </p>
 
       {saving && <p className="text-xs opacity-70">speichere…</p>}
