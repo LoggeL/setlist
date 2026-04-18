@@ -1,7 +1,6 @@
 'use client';
 
 import type { ArtistSummary } from '@/lib/queries';
-import { useDominantColor } from '@/lib/useDominantColor';
 import ArtistAvatar from './ArtistAvatar';
 import AudioButton from './AudioButton';
 import AddToWishlistButton from '@/components/wishlist/AddToWishlistButton';
@@ -19,7 +18,7 @@ export default function ArtistCard({
   isOwner?: boolean;
 }) {
   const coverSrc = artist.album_cover_url || artist.artist_img;
-  const tint = useDominantColor(coverSrc);
+  const tint = artist.dominant_color;
   const seen = artist.live_events.length > 0;
   const wants = artist.wishlist_id !== null;
 

@@ -1,6 +1,7 @@
 import { getDb } from '@/lib/db';
 import { getSessionUserFromRequest } from '@/lib/auth';
 import { cachePreview } from '@/lib/preview';
+import { queueImageMeta } from '@/lib/imageMeta';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
@@ -54,6 +55,8 @@ export async function POST(req: NextRequest) {
   }
 
   const cachedPreview = await cachePreview(preview_url);
+  queueImageMeta(album_cover_url);
+  queueImageMeta(artist_img);
 
   const db = getDb();
   const result = db

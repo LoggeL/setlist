@@ -1,6 +1,7 @@
 import { getDb } from '@/lib/db';
 import { getSessionUserFromRequest } from '@/lib/auth';
 import { cachePreview } from '@/lib/preview';
+import { queueImageMeta } from '@/lib/imageMeta';
 import { NextRequest, NextResponse } from 'next/server';
 
 /** DELETE /api/wishlist — remove a wishlist row by artist_name (case-insensitive). */
@@ -46,6 +47,8 @@ export async function POST(req: NextRequest) {
   }
 
   const cachedPreview = await cachePreview(preview_url);
+  queueImageMeta(album_cover_url);
+  queueImageMeta(artist_img);
 
   const result = db.prepare(
     `INSERT INTO wishlist (user_id, artist_name, artist_img, album_cover_url, genre, track_title, preview_url)

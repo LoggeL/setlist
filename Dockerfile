@@ -21,9 +21,11 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Ship one-shot maintenance scripts (bulk import, etc.) + bands.json so they
-# can be run via `docker exec <container> node scripts/<file>.js`.
+# Ship one-shot maintenance scripts (bulk import, backfills) + bands.json so
+# they can be run via `docker exec -w /app <container> node scripts/<file>.js`.
 COPY --from=builder --chown=nextjs:nodejs /app/scripts/bulk-import-bands.js ./scripts/bulk-import-bands.js
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/fix-preview-urls.js ./scripts/fix-preview-urls.js
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/backfill-image-meta.js ./scripts/backfill-image-meta.js
 COPY --from=builder --chown=nextjs:nodejs /app/bands.json ./bands.json
 
 # Persistent storage. /data → SQLite DB, public/avatars → user uploads,

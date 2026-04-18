@@ -228,6 +228,9 @@ export type ArtistSummary = {
   last_event_date: string | null;
   /** Max of wishlist.created_at and live_events.created_at — "added to this user's records". */
   added_at: string | null;
+  /** Pre-computed backdrop tint from image_meta — replaces client-side color extraction. */
+  dominant_color: string | null;
+  blurhash: string | null;
 };
 
 /**
@@ -290,6 +293,8 @@ export function getArtistSummary(userId: number): ArtistSummary[] {
       live_events: [],
       last_event_date: null,
       added_at: w.created_at,
+      dominant_color: null,
+      blurhash: null,
     });
   }
 
@@ -329,7 +334,26 @@ export function getArtistSummary(userId: number): ArtistSummary[] {
         live_events: [live],
         last_event_date: l.event_date,
         added_at: l.created_at,
+        dominant_color: null,
+        blurhash: null,
       });
+    }
+  }
+
+  // Attach cached dominant color + blurhash for the cover that will actually
+  // be shown on each card. Falls back from album cover → artist image.
+  const metaStmt = db.prepare(
+    'SELECT dominant_color, blurhash FROM image_meta WHERE url = ?'
+  );
+  for (const a of byKey.values()) {
+    const cover = a.album_cover_url || a.artist_img;
+    if (!cover) continue;
+    const meta = metaStmt.get(cover) as
+      | { dominant_color: string | null; blurhash: string | null }
+      | undefined;
+    if (meta) {
+      a.dominant_color = meta.dominant_color;
+      a.blurhash = meta.blurhash;
     }
   }
 

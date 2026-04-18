@@ -2,6 +2,7 @@ import { writeFile, unlink, mkdir } from 'fs/promises';
 import path from 'path';
 import { getDb } from '@/lib/db';
 import { getSessionUserFromRequest } from '@/lib/auth';
+import { queueImageMeta } from '@/lib/imageMeta';
 import { NextRequest, NextResponse } from 'next/server';
 
 const MAX_BYTES = 8 * 1024 * 1024; // 8 MB — fits most gifs
@@ -61,6 +62,7 @@ export async function POST(req: NextRequest) {
   db.prepare('UPDATE users SET avatar_url = ? WHERE id = ?').run(newUrl, me.id);
 
   await removeOldAvatar(prev?.avatar_url ?? null);
+  queueImageMeta(newUrl);
 
   return NextResponse.json({ avatar_url: newUrl });
 }
