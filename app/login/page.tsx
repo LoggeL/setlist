@@ -93,8 +93,8 @@ export default function LoginPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <label className="block">
-                <span className="mono text-[0.66rem] uppercase tracking-[0.22em] font-semibold opacity-75 block mb-1">
+              <label className="grid gap-1">
+                <span className="mono text-[0.66rem] uppercase tracking-[0.22em] font-semibold opacity-75">
                   Benutzername
                 </span>
                 <input
@@ -106,8 +106,8 @@ export default function LoginPage() {
                 />
               </label>
 
-              <label className="block">
-                <span className="mono text-[0.66rem] uppercase tracking-[0.22em] font-semibold opacity-75 block mb-1">
+              <label className="grid gap-1">
+                <span className="mono text-[0.66rem] uppercase tracking-[0.22em] font-semibold opacity-75">
                   Passwort
                 </span>
                 <input
