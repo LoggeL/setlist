@@ -1,5 +1,6 @@
 import { getDb } from '@/lib/db';
 import { getSessionUserFromRequest } from '@/lib/auth';
+import { cachePreview } from '@/lib/preview';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -15,6 +16,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
 
+  const cachedPreview = await cachePreview(preview_url);
+
   const db = getDb();
   const result = db.prepare(
     `INSERT INTO diary_entries (user_id, artist_name, artist_img, album_cover_url, track_title, genre, preview_url, note, mood, listened_at)
@@ -26,7 +29,7 @@ export async function POST(req: NextRequest) {
     album_cover_url || null,
     track_title,
     genre || null,
-    preview_url || null,
+    cachedPreview || null,
     note || null,
     mood || null,
     listened_at

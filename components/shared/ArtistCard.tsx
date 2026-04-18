@@ -1,20 +1,22 @@
 'use client';
 
-import Link from 'next/link';
 import type { ArtistSummary } from '@/lib/queries';
 import { useDominantColor } from '@/lib/useDominantColor';
 import ArtistAvatar from './ArtistAvatar';
 import AudioButton from './AudioButton';
 import AddToWishlistButton from '@/components/wishlist/AddToWishlistButton';
+import BandStatusToggles from './BandStatusToggles';
 
 export default function ArtistCard({
   artist,
   ownerUsername,
   showAddToWishlist = false,
+  isOwner = false,
 }: {
   artist: ArtistSummary;
   ownerUsername: string;
   showAddToWishlist?: boolean;
+  isOwner?: boolean;
 }) {
   const coverSrc = artist.album_cover_url || artist.artist_img;
   const tint = useDominantColor(coverSrc);
@@ -86,13 +88,13 @@ export default function ArtistCard({
           </div>
 
           <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
-            {seen && (
+            {!isOwner && seen && (
               <span className="chip chip-solid" title="Live gesehen">
                 GESEHEN
                 {artist.live_events.length > 1 && ` ×${artist.live_events.length}`}
               </span>
             )}
-            {wants && (
+            {!isOwner && wants && (
               <span
                 className={`chip ${!seen ? 'chip-ember' : ''}`}
                 title="Auf der Wunschliste"
@@ -103,41 +105,21 @@ export default function ArtistCard({
             {artist.genre && <span className="chip">{artist.genre}</span>}
           </div>
 
-          {seen && (
-            <ul className="mt-1.5 space-y-0.5 text-[0.72rem] opacity-80 leading-snug">
-              {artist.live_events.slice(0, 3).map((le) => (
-                <li key={le.id} className="truncate">
-                  <Link
-                    href={`/@${ownerUsername}/live/${le.id}`}
-                    className="hover:underline decoration-1 underline-offset-2"
-                  >
-                    {le.event_date && (
-                      <span className="mono-num mr-1">{le.event_date}</span>
-                    )}
-                    {le.venue && <span>· {le.venue}</span>}
-                    {!le.event_date && !le.venue && <span>Konzert #{le.id}</span>}
-                  </Link>
-                </li>
-              ))}
-              {artist.live_events.length > 3 && (
-                <li className="opacity-60 mono text-[0.68rem]">
-                  + {artist.live_events.length - 3} weitere
-                </li>
-              )}
-            </ul>
-          )}
-
-          {showAddToWishlist && !wants && !seen && (
-            <div className="mt-2">
-              <AddToWishlistButton
-                artist_name={artist.artist_name}
-                artist_img={artist.artist_img}
-                album_cover_url={artist.album_cover_url}
-                genre={artist.genre}
-                track_title={artist.track_title}
-                preview_url={artist.preview_url}
-              />
-            </div>
+          {isOwner ? (
+            <BandStatusToggles artist={artist} />
+          ) : (
+            showAddToWishlist && !wants && !seen && (
+              <div className="mt-2">
+                <AddToWishlistButton
+                  artist_name={artist.artist_name}
+                  artist_img={artist.artist_img}
+                  album_cover_url={artist.album_cover_url}
+                  genre={artist.genre}
+                  track_title={artist.track_title}
+                  preview_url={artist.preview_url}
+                />
+              </div>
+            )
           )}
         </div>
       </div>

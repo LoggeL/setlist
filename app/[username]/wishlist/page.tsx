@@ -87,6 +87,7 @@ export default async function BandsPage({
               artists={artists}
               ownerUsername={ctx.owner.username}
               showAddToWishlist={!ctx.isOwner && !!ctx.viewer}
+              isOwner={ctx.isOwner}
             />
           )}
         </div>

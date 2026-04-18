@@ -134,6 +134,7 @@ export default function DiaryCard({
               )}
               <PlayButton
                 playing={playing}
+                progress={progress}
                 onToggle={toggle}
                 disabled={!entry.preview_url}
               />

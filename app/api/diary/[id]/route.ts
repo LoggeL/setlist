@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
 import { getSessionUserFromRequest } from '@/lib/auth';
+import { cachePreview } from '@/lib/preview';
 import type { DiaryEntry } from '@/lib/db';
 
 async function loadEntry(req: NextRequest, idStr: string) {
@@ -41,7 +42,10 @@ export async function PATCH(
     artist_img: 'artist_img' in body ? (body.artist_img || null) : entry.artist_img,
     album_cover_url:
       'album_cover_url' in body ? (body.album_cover_url || null) : entry.album_cover_url,
-    preview_url: 'preview_url' in body ? (body.preview_url || null) : entry.preview_url,
+    preview_url:
+      'preview_url' in body
+        ? await cachePreview(body.preview_url || null)
+        : entry.preview_url,
     genre: 'genre' in body ? (body.genre || null) : entry.genre,
     note: 'note' in body ? (body.note || null) : entry.note,
     listened_at:

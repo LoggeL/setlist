@@ -5,6 +5,7 @@ import ProfileHeader from '@/components/shared/ProfileHeader';
 import BlockedNotice from '@/components/shared/BlockedNotice';
 import DiaryCard from '@/components/diary/DiaryCard';
 import AddDiaryForm from '@/components/diary/AddDiaryForm';
+import VolumeControl from '@/components/shared/VolumeControl';
 
 export default async function DiaryPage({
   params,
@@ -40,6 +41,7 @@ export default async function DiaryPage({
         <BlockedNotice visibility={ctx.owner.visibility} />
       ) : (
         <div className="space-y-4">
+          <VolumeControl />
           {ctx.isOwner && <AddDiaryForm />}
           {entries.length === 0 ? (
             <div className="block p-6 text-center stripe">

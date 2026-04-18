@@ -14,21 +14,23 @@ const FILTERS: { value: Filter; label: string }[] = [
 ];
 
 const SORTS: { value: Sort; label: string }[] = [
-  { value: 'added', label: 'Zuletzt hinzugefügt' },
   { value: 'alpha', label: 'Alphabetisch' },
+  { value: 'added', label: 'Zuletzt hinzugefügt' },
 ];
 
 export default function BandsGrid({
   artists,
   ownerUsername,
   showAddToWishlist,
+  isOwner = false,
 }: {
   artists: ArtistSummary[];
   ownerUsername: string;
   showAddToWishlist: boolean;
+  isOwner?: boolean;
 }) {
   const [filter, setFilter] = useState<Filter>('all');
-  const [sort, setSort] = useState<Sort>('added');
+  const [sort, setSort] = useState<Sort>('alpha');
 
   const counts = useMemo(() => {
     let seen = 0;
@@ -110,6 +112,7 @@ export default function BandsGrid({
               artist={a}
               ownerUsername={ownerUsername}
               showAddToWishlist={showAddToWishlist}
+              isOwner={isOwner}
             />
           ))}
         </div>

@@ -1,13 +1,23 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import { mkdirSync } from 'fs';
 
-const DB_PATH = path.join(process.cwd(), 'data.db');
+// Prefer an explicit DB_PATH (e.g. "/data/data.db" on Docker volume).
+// Otherwise store in DATA_DIR or cwd so the file never ends up in an
+// image layer that's wiped on redeploy.
+function resolveDbPath(): string {
+  if (process.env.DB_PATH) return process.env.DB_PATH;
+  const dir = process.env.DATA_DIR || process.cwd();
+  return path.join(dir, 'data.db');
+}
 
 let _db: Database.Database | null = null;
 
 export function getDb(): Database.Database {
   if (!_db) {
-    _db = new Database(DB_PATH);
+    const dbPath = resolveDbPath();
+    mkdirSync(path.dirname(dbPath), { recursive: true });
+    _db = new Database(dbPath);
     _db.pragma('journal_mode = WAL');
     _db.pragma('foreign_keys = ON');
     initSchema(_db);

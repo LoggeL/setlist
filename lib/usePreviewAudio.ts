@@ -3,6 +3,29 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
+ * Rewrite cross-origin Deezer preview URLs through our same-origin proxy.
+ * Deezer's preview CDN sometimes rejects direct browser requests (missing
+ * Referer, regional blocks, etc.), so /api/audio fetches with a deezer.com
+ * Referer and pipes the bytes back.
+ */
+export function proxiedAudioUrl(src: string | null | undefined): string | null {
+  if (!src) return null;
+  if (src.startsWith('/') || src.startsWith('data:') || src.startsWith('blob:')) {
+    return src;
+  }
+  try {
+    const u = new URL(src);
+    if (u.protocol !== 'https:' && u.protocol !== 'http:') return src;
+    if (u.hostname === 'dzcdn.net' || u.hostname.endsWith('.dzcdn.net')) {
+      return `/api/audio?url=${encodeURIComponent(src)}`;
+    }
+  } catch {
+    // Malformed URL — let the browser try and fail naturally.
+  }
+  return src;
+}
+
+/**
  * Shared audio state for preview playback.
  * - Reads volume from localStorage and listens for setlist-volume-change events.
  * - Returns live progress (0..1) so callers can render a progress UI.
@@ -34,7 +57,8 @@ export function usePreviewAudio(src: string | null) {
   const toggle = useCallback(() => {
     if (!src) return;
     if (!audioRef.current) {
-      audioRef.current = new Audio(src);
+      const playable = proxiedAudioUrl(src) || src;
+      audioRef.current = new Audio(playable);
       const stored =
         typeof window !== 'undefined' ? localStorage.getItem('setlist-volume') : null;
       audioRef.current.volume = stored !== null ? parseFloat(stored) : 0.7;
