@@ -391,6 +391,68 @@ export function getArtistSummary(userId: number): ArtistSummary[] {
   });
 }
 
+export type UpcomingRow = {
+  artist_name: string;
+  artist_img: string | null;
+  album_cover_url: string | null;
+  event_date: string;
+  venue: string | null;
+  city: string | null;
+  region: string | null;
+  country: string | null;
+  ticket_url: string | null;
+  event_url: string | null;
+};
+
+/**
+ * Flat chronological list of upcoming concerts for every artist the user
+ * has on their bands page (wishlist ∪ live_events). Triggers a background
+ * refresh for stale artist entries; callers never block on the network.
+ */
+export function getUpcomingForUser(userId: number): UpcomingRow[] {
+  const db = getDb();
+
+  const artists = db
+    .prepare(
+      `SELECT DISTINCT artist_name, artist_img, album_cover_url FROM (
+         SELECT artist_name, artist_img, album_cover_url FROM wishlist WHERE user_id = ?
+         UNION ALL
+         SELECT artist_name, artist_img, album_cover_url FROM live_events WHERE user_id = ?
+       )
+       GROUP BY LOWER(artist_name)`
+    )
+    .all(userId, userId) as Array<{
+    artist_name: string;
+    artist_img: string | null;
+    album_cover_url: string | null;
+  }>;
+
+  const names = artists.map((a) => a.artist_name);
+  const upcoming = getCachedUpcomingBatch(names);
+  for (const n of names) scheduleRefreshIfStale(n);
+
+  const rows: UpcomingRow[] = [];
+  for (const a of artists) {
+    const events = upcoming.get(a.artist_name.toLowerCase()) || [];
+    for (const e of events) {
+      rows.push({
+        artist_name: a.artist_name,
+        artist_img: a.artist_img,
+        album_cover_url: a.album_cover_url,
+        event_date: e.event_date,
+        venue: e.venue,
+        city: e.city,
+        region: e.region,
+        country: e.country,
+        ticket_url: e.ticket_url,
+        event_url: e.event_url,
+      });
+    }
+  }
+  rows.sort((a, b) => (a.event_date < b.event_date ? -1 : a.event_date > b.event_date ? 1 : 0));
+  return rows;
+}
+
 export type WishlistBuddy = {
   artist_name: string;
   artist_img: string | null;

@@ -17,12 +17,13 @@ export default function ProfileHeader({
   counts: { diary: number; live: number; wishlist: number; artists: number };
   friendCount: number;
   friendState: FriendState;
-  active: 'overview' | 'bands' | 'friends';
+  active: 'overview' | 'bands' | 'tour' | 'friends';
   isOwner?: boolean;
 }) {
   const tabs: { key: typeof active; label: string; href: string }[] = [
     { key: 'overview', label: 'ÜBERSICHT', href: `/@${user.username}` },
     { key: 'bands', label: `BANDS · ${counts.artists}`, href: `/@${user.username}/wishlist` },
+    { key: 'tour', label: 'TOUR', href: `/@${user.username}/upcoming` },
     { key: 'friends', label: `FREUNDE · ${friendCount}`, href: `/@${user.username}/friends` },
   ];
 
@@ -71,6 +72,7 @@ export default function ProfileHeader({
             <Link
               key={t.key}
               href={t.href}
+              prefetch
               className={`text-[0.78rem] mono py-2 border-b-2 transition-colors ${
                 on
                   ? 'border-ink font-semibold'
