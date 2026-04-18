@@ -7,6 +7,7 @@ import CompareWishlist from '@/components/wishlist/CompareWishlist';
 import ConcertBuddies from '@/components/wishlist/ConcertBuddies';
 import SharedWishlistCallout from '@/components/wishlist/SharedWishlistCallout';
 import AddBandForm from '@/components/wishlist/AddBandForm';
+import VolumeControl from '@/components/shared/VolumeControl';
 
 export default async function BandsPage({
   params,
@@ -46,6 +47,8 @@ export default async function BandsPage({
         <BlockedNotice visibility={ctx.owner.visibility} />
       ) : (
         <div className="space-y-4">
+          <VolumeControl />
+
           {shared.length > 0 && ctx.viewer && (
             <SharedWishlistCallout
               otherUsername={ctx.owner.username}
