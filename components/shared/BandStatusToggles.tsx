@@ -74,7 +74,7 @@ export default function BandStatusToggles({ artist }: { artist: ArtistSummary })
         title={
           seen
             ? seenCount > 1
-              ? 'Letztes Konzert entfernen'
+              ? `Alle ${seenCount} Konzerte entfernen`
               : 'Als nicht gesehen markieren'
             : 'Als gesehen markieren'
         }

@@ -4,8 +4,10 @@ import { cachePreview } from '@/lib/preview';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
- * DELETE /api/live — remove the most recent live_event for the given artist.
- * Body: { artist_name }. Used by the band-status toggle on the bands page.
+ * DELETE /api/live — remove *all* live_events for the given artist owned by
+ * the current user. Drives the GESEHEN toggle on the bands page: one click
+ * off flips the whole status, not just the latest concert.
+ * Body: { artist_name }
  */
 export async function DELETE(req: NextRequest) {
   const currentUser = getSessionUserFromRequest(req);
@@ -19,26 +21,13 @@ export async function DELETE(req: NextRequest) {
   }
 
   const db = getDb();
-  const row = db
+  const result = db
     .prepare(
-      `SELECT id FROM live_events
-       WHERE user_id = ? AND LOWER(artist_name) = LOWER(?)
-       ORDER BY event_date DESC, created_at DESC
-       LIMIT 1`
+      'DELETE FROM live_events WHERE user_id = ? AND LOWER(artist_name) = LOWER(?)'
     )
-    .get(currentUser.id, artist_name) as { id: number } | undefined;
+    .run(currentUser.id, artist_name);
 
-  if (!row) return NextResponse.json({ ok: true, removed: null });
-
-  db.prepare('DELETE FROM live_events WHERE id = ?').run(row.id);
-
-  const remaining = (db
-    .prepare(
-      'SELECT COUNT(*) AS n FROM live_events WHERE user_id = ? AND LOWER(artist_name) = LOWER(?)'
-    )
-    .get(currentUser.id, artist_name) as { n: number }).n;
-
-  return NextResponse.json({ ok: true, removed: row.id, remaining });
+  return NextResponse.json({ ok: true, removed: result.changes });
 }
 
 export async function POST(req: NextRequest) {
