@@ -13,6 +13,20 @@ export default function AddBandForm() {
   async function addFromSong(song: SongPick) {
     setError('');
     setSaving(true);
+
+    let genre: string | null = null;
+    if (song.album_id) {
+      try {
+        const r = await fetch(`/api/deezer/album/${song.album_id}`);
+        if (r.ok) {
+          const data = await r.json();
+          genre = data.genre ?? null;
+        }
+      } catch {
+        // non-fatal — genre stays null
+      }
+    }
+
     const res = await fetch('/api/wishlist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -20,6 +34,7 @@ export default function AddBandForm() {
         artist_name: song.artist_name,
         artist_img: song.artist_img || null,
         album_cover_url: song.album_cover_url || null,
+        genre,
         track_title: song.track_title || null,
         preview_url: song.preview_url || null,
       }),

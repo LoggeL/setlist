@@ -101,22 +101,69 @@ export default function BandStatusToggles({ artist }: { artist: ArtistSummary })
     }
   }
 
+  async function removeCompletely() {
+    if (busy) return;
+    if (!confirm(`"${artist.artist_name}" komplett entfernen?`)) return;
+    setBusy(true);
+    setFailed(false);
+    try {
+      const calls: Promise<Response>[] = [];
+      if (artist.wishlist_id) {
+        calls.push(
+          fetch('/api/wishlist', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ artist_name: artist.artist_name }),
+          })
+        );
+      }
+      if (artist.live_events.length > 0) {
+        calls.push(
+          fetch('/api/live', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ artist_name: artist.artist_name }),
+          })
+        );
+      }
+      const results = await Promise.all(calls);
+      if (results.some((r) => !r.ok)) throw new Error('server rejected');
+      router.refresh();
+    } catch {
+      setFailed(true);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
-    <button
-      type="button"
-      onClick={flip}
-      disabled={busy}
-      aria-pressed={seen}
-      title={seen ? 'Auf die Wunschliste zurücklegen' : 'Als live gesehen markieren'}
-      className={`mt-2 mono text-[0.7rem] uppercase tracking-[0.05em] py-1 px-2.5 leading-none border rounded-[4px] transition-colors disabled:opacity-70 cursor-pointer ${
-        seen
-          ? 'bg-ink text-paper border-ink hover:bg-ink-soft'
-          : 'bg-ember text-paper border-ember hover:bg-ember-soft'
-      } ${failed ? 'outline outline-2 outline-ember' : ''}`}
-    >
-      {seen
-        ? `✓ Gesehen${showCount ? ` ×${serverCount}` : ''}`
-        : '◇ Will sehen'}
-    </button>
+    <div className="mt-2 flex items-center gap-1.5">
+      <button
+        type="button"
+        onClick={flip}
+        disabled={busy}
+        aria-pressed={seen}
+        title={seen ? 'Auf die Wunschliste zurücklegen' : 'Als live gesehen markieren'}
+        className={`mono text-[0.7rem] uppercase tracking-[0.05em] py-1 px-2.5 leading-none border rounded-[4px] transition-colors disabled:opacity-70 cursor-pointer ${
+          seen
+            ? 'bg-ink text-paper border-ink hover:bg-ink-soft'
+            : 'bg-ember text-paper border-ember hover:bg-ember-soft'
+        } ${failed ? 'outline outline-2 outline-ember' : ''}`}
+      >
+        {seen
+          ? `✓ Gesehen${showCount ? ` ×${serverCount}` : ''}`
+          : '◇ Will sehen'}
+      </button>
+      <button
+        type="button"
+        onClick={removeCompletely}
+        disabled={busy}
+        title="Band komplett entfernen"
+        aria-label={`${artist.artist_name} entfernen`}
+        className="mono text-[0.7rem] leading-none py-1 px-2 border border-rule-strong rounded-[4px] opacity-60 hover:opacity-100 hover:bg-mark-soft disabled:opacity-40 cursor-pointer"
+      >
+        ✕
+      </button>
+    </div>
   );
 }
