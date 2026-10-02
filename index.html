@@ -92,6 +92,9 @@ main{padding:88px 24px 120px;max-width:1200px;margin:0 auto}
 .band-card .progress-bar{height:2px;background:rgba(255,255,255,.04);margin:0 16px 12px;border-radius:1px;overflow:hidden}
 .band-card .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--primary-dim),var(--primary));border-radius:1px;transition:width .1s}
 .seen-grid{display:flex;flex-direction:column;gap:12px}
+.year-divider{display:flex;align-items:center;gap:16px;margin:24px 0 8px;color:var(--secondary);font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:.08em}
+.year-divider:first-child{margin-top:0}
+.year-divider::after{content:'';flex:1;min-width:0;height:1px;background:var(--outline-variant)}
 .seen-card{position:relative;display:flex;align-items:center;gap:20px;padding:20px;background:var(--surface-container);border-radius:12px;cursor:pointer;transition:all .3s;box-shadow:inset 0 0 20px rgba(47,248,1,.01)}
 .seen-card:hover{background:var(--surface-bright)}
 .seen-card.playing{box-shadow:0 0 0 1px var(--secondary),0 0 30px rgba(47,248,1,.1)}
@@ -351,6 +354,15 @@ document.getElementById('vol').addEventListener('input',function(){
   if(au)au.volume=this.value;
 });
 
+function concertDate(b){
+  const match=(b.note||'').match(/\b(\d{2})\.(\d{2})\.(\d{4})\b/);
+  if(!match)return null;
+  const [,day,month,year]=match.map(Number);
+  const date=new Date(Date.UTC(year,month-1,day));
+  if(date.getUTCFullYear()!==year||date.getUTCMonth()!==month-1||date.getUTCDate()!==day)return null;
+  return {year,time:date.getTime()};
+}
+
 async function init(){
   const r=await fetch('bands.json');
   const data=await r.json();
@@ -365,18 +377,20 @@ async function init(){
   document.getElementById('sn').textContent=data.seen.length+' Experiences';
 
   data.want.forEach(b=>wg.appendChild(mkWantCard(b)));
-  // Sort seen bands by date (newest first)
-  const sortedSeen = [...data.seen].sort((a,b) => {
-    const dateA = (a.note||'').match(/\d{2}\.\d{2}\.\d{4}/);
-    const dateB = (b.note||'').match(/\d{2}\.\d{2}\.\d{4}/);
-    if (!dateA && !dateB) return 0;
-    if (!dateA) return 1;
-    if (!dateB) return -1;
-    const [dA,mA,yA] = dateA[0].split('.');
-    const [dB,mB,yB] = dateB[0].split('.');
-    return new Date(yB+'-'+mB+'-'+dB) - new Date(yA+'-'+mA+'-'+dA);
+  // Only complete, valid concert dates count; a year alone is still undated.
+  const datedSeen = data.seen.map(b=>({band:b,date:concertDate(b)}));
+  datedSeen.sort((a,b)=>(b.date?.time??-Infinity)-(a.date?.time??-Infinity)||0);
+  let previousYear=null;
+  datedSeen.forEach(({band,date})=>{
+    const year=date?String(date.year):'unknown';
+    if(year!==previousYear){
+      const divider=document.createElement('h3');
+      divider.className='year-divider';divider.dataset.year=year;
+      divider.textContent=date?String(date.year):'Ohne Datum';
+      sg.appendChild(divider);previousYear=year;
+    }
+    sg.appendChild(mkSeenCard(band));
   });
-  sortedSeen.forEach(b=>sg.appendChild(mkSeenCard(b)));
 }
 
 document.querySelectorAll('.nav-links a, .bottom-nav a').forEach(a=>{
