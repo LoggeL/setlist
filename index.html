@@ -363,6 +363,14 @@ function concertDate(b){
   return {year,time:date.getTime()};
 }
 
+function concertYear(b){
+  const date=concertDate(b);
+  if(date)return date.year;
+  // Keep year-only attendance uncertain; never manufacture a calendar date.
+  const years=(b.note||'').match(/(?<!\d)(?:19|20)\d{2}(?!\d)/g);
+  return years?Math.min(...years.map(Number)):null;
+}
+
 async function init(){
   const r=await fetch('bands.json');
   const data=await r.json();
@@ -377,16 +385,18 @@ async function init(){
   document.getElementById('sn').textContent=data.seen.length+' Experiences';
 
   data.want.forEach(b=>wg.appendChild(mkWantCard(b)));
-  // Only complete, valid concert dates count; a year alone is still undated.
-  const datedSeen = data.seen.map(b=>({band:b,date:concertDate(b)}));
-  datedSeen.sort((a,b)=>(b.date?.time??-Infinity)-(a.date?.time??-Infinity)||0);
+  // Newest years first; exact dates first within a year, year-only entries last.
+  const datedSeen = data.seen.map(b=>({band:b,date:concertDate(b),year:concertYear(b)}));
+  datedSeen.sort((a,b)=>(b.year??-Infinity)-(a.year??-Infinity)||
+    (b.date?.time??-Infinity)-(a.date?.time??-Infinity)||
+    (!a.date&&!b.date?a.band.name.localeCompare(b.band.name,'de'):0));
   let previousYear=null;
-  datedSeen.forEach(({band,date})=>{
-    const year=date?String(date.year):'unknown';
+  datedSeen.forEach(({band,year:knownYear})=>{
+    const year=knownYear===null?'unknown':String(knownYear);
     if(year!==previousYear){
       const divider=document.createElement('h3');
       divider.className='year-divider';divider.dataset.year=year;
-      divider.textContent=date?String(date.year):'Ohne Datum';
+      divider.textContent=knownYear===null?'Ohne Datum':String(knownYear);
       sg.appendChild(divider);previousYear=year;
     }
     sg.appendChild(mkSeenCard(band));
