@@ -351,12 +351,12 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/d159e783c1f419ae27fd2deca5b89b54/250x250-000000-80-0-0.jpg",
       "trackTitle": "Can You Feel My Heart",
       "preview": "previews/Bring-me-the-Horizon.mp3?v=1774311427",
-      "note": "Rock am Ring, 2023"
+      "note": "Rock am Ring · 05.06.2023 (00:00; Festival-Sonntag 04.06.)"
     },
     {
       "name": "Don't Tell the Others",
       "genre": "Rock",
-      "note": ""
+      "note": "Black & Orange Party · Kolpingtheater Ramsen"
     },
     {
       "name": "Donots",
@@ -415,7 +415,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/b72967bf4b539d8d45fd6d717742c54d/250x250-000000-80-0-0.jpg",
       "trackTitle": "Komplett im Arsch",
       "preview": "previews/Feine-Sahne-Fischfilet.mp3?v=1774311427",
-      "note": "Highfield, 2026"
+      "note": "Highfield · 16.08.2026"
     },
     {
       "name": "FiNCH",
@@ -447,7 +447,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/920d4b693287873a8d2b3c934ba9b241/250x250-000000-80-0-0.jpg",
       "trackTitle": "1x1",
       "preview": "previews/Hollywood-Undead.mp3?v=1774311427",
-      "note": "Rock am Ring, 2023"
+      "note": "Rock am Ring · 03.06.2023"
     },
     {
       "name": "Kaffkiez",
@@ -490,7 +490,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/91edf179d12f90ccb8a28d5128916ffa/250x250-000000-80-0-0.jpg",
       "trackTitle": "Kruppstahl, Baby",
       "preview": "previews/Lumpenpack.mp3?v=1786892457",
-      "note": "Highfield, 2026"
+      "note": "Highfield · 15.08.2026"
     },
     {
       "name": "Madsen",
@@ -521,7 +521,8 @@
       "genre": "Indie/Folk",
       "img": "https://cdn-images.dzcdn.net/images/artist/b24f81d0a08808f49dff0c0877919eb6/250x250-000000-80-0-0.jpg",
       "trackTitle": "Nachteule",
-      "preview": "previews/Mehnersmoos.mp3?v=1774568683"
+      "preview": "previews/Mehnersmoos.mp3?v=1774568683",
+      "note": "SAARBRÜCKEN"
     },
     {
       "name": "Ok.danke.tschüss",
@@ -569,7 +570,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/b0d7f286df68f6a356aaa96976e2bb86/250x250-000000-80-0-0.jpg",
       "trackTitle": "Nie mehr Fastelovend",
       "preview": "previews/Querbeat.mp3?v=1774311427",
-      "note": "Southside, 2025"
+      "note": "Southside · 21.06.2025"
     },
     {
       "name": "Raum27",
@@ -609,7 +610,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/0b4f211d749fe944d984939dfab30d6d/250x250-000000-80-0-0.jpg",
       "trackTitle": "Besteste Band",
       "preview": "previews/Swiss-&-Die-Andern.mp3?v=1774341505",
-      "note": "Southside, 2025"
+      "note": "Southside · 22.06.2025"
     },
     {
       "name": "Team Scheiße",
@@ -633,7 +634,7 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/2ffbb6971279cc57ba1c029178ac6ed3/250x250-000000-80-0-0.jpg",
       "trackTitle": "Animal I Have Become",
       "preview": "previews/Three-Days-Grace.mp3?v=1774311427",
-      "note": "Rock am Ring, 2023"
+      "note": "Rock am Ring · 04.06.2023"
     },
     {
       "name": "Tream",
