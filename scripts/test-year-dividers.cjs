@@ -62,8 +62,9 @@ async function check(input, labels, names){
     if(child.className==='year-divider')group=child.textContent;
     else {counts[group]=(counts[group]||0)+1;(groups[group]??=[]).push(child.children[1].children[0].children[0].textContent);}
   }
-  assert.deepEqual(counts,{'2026':13,'2025':18,'2024':12,'2023':4,'Ohne Datum':2});
-  assert.deepEqual(groups['2025'].slice(-5),['Bluthund','ENNIO','Peter Fox','Tream','Yu']);
+  assert.deepEqual(counts,{'2026':14,'2025':17,'2024':12,'2023':4,'Ohne Datum':2});
+  assert.equal(groups['2026'][0],'Bluthund');
+  assert.deepEqual(groups['2025'].slice(-4),['ENNIO','Peter Fox','Tream','Yu']);
   assert.equal(groups['2023'].at(-1),'From Fall to Spring');
   assert.deepEqual(groups['Ohne Datum'],['Drunken Masters','Mehnersmoos']);
   console.log('PASS: exact dates, year-only notes, earliest multi-year, exact-date precedence, invalid dates, chronological/alphabetic order; 49 SEEN / 35 WANT',counts);
