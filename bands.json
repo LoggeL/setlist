@@ -668,5 +668,51 @@
       "preview": "previews/Zartmann.mp3?v=1774311427",
       "note": "Southside · 22.06.2025"
     }
+  ],
+  "upcoming": [
+    {
+      "date": "2026-10-23",
+      "artist": "The Butcher Sisters",
+      "city": "Mannheim",
+      "identitySource": "https://thebutchersisters.de/en/info/tours/heimspiel-4"
+    },
+    {
+      "date": "2026-11-06",
+      "artist": "HOLY PRIEST",
+      "city": "Mannheim"
+    },
+    {
+      "date": "2026-11-20",
+      "artist": "Drunken Masters",
+      "city": "Stuttgart"
+    },
+    {
+      "date": "2026-11-26",
+      "artist": "Filow",
+      "city": "Frankfurt"
+    },
+    {
+      "date": "2026-12-18",
+      "artist": "STUTYARD",
+      "city": "Stuttgart",
+      "kind": "event",
+      "identitySource": "https://stutyard.com/",
+      "identityNote": "Checklist logo stutyard; event brand, not an artist. Official 18 December listing: stutyard x unreal."
+    },
+    {
+      "date": "2027-04-08",
+      "artist": "Jack Pott",
+      "city": "Wiesbaden"
+    },
+    {
+      "date": "2027-04-16",
+      "artist": "Drunken Masters",
+      "city": "Mannheim"
+    },
+    {
+      "date": "2027-04-22",
+      "artist": "Moonkid",
+      "city": "Wiesbaden"
+    }
   ]
 }

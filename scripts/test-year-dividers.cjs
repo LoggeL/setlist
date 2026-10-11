@@ -7,6 +7,7 @@ class Element {
   appendChild(child){this.children.push(child);return child;}
   replaceChildren(){this.children=[];}
   addEventListener(){}
+  setAttribute(key,value){this[key]=value;}
 }
 const elements = {};
 const document = {createElement:()=>new Element(),createTextNode:text=>({textContent:text}),getElementById:id=>elements[id]??=new Element(),querySelectorAll:()=>[]};

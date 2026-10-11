@@ -132,6 +132,26 @@ footer{text-align:center;padding:60px 24px 40px;font-family:'Space Grotesk',sans
 .band-card:hover .badge.want-badge{box-shadow:0 0 12px rgba(255,113,155,.4)}
 .seen-card:hover .badge{box-shadow:0 0 12px rgba(47,248,1,.4)}
 
+/* Upcoming concerts reuse catalog artwork and preview behavior. */
+#upcoming,#bucket,#history{scroll-margin-top:88px}
+.upcoming-section{margin:0 0 40px}
+.upcoming-section .section-header{margin-top:0;align-items:center;gap:16px}
+.upcoming-kicker{font-family:'Space Grotesk',sans-serif;color:var(--tertiary);font-size:.65rem;text-transform:uppercase;letter-spacing:.18em;margin-bottom:10px}
+.upcoming-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.upcoming-card{position:relative;display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface-container);border-radius:12px;min-width:0;border-left:2px solid var(--primary)}
+.upcoming-card.playing{box-shadow:0 0 0 1px var(--primary)}
+.upcoming-date{font-family:'Space Grotesk',sans-serif;color:var(--primary);font-size:.85rem;white-space:nowrap;min-width:88px}
+.upcoming-img{width:44px;height:44px;flex-shrink:0;background:var(--surface-variant);border-radius:8px;overflow:hidden}
+.upcoming-img img{width:100%;height:100%;object-fit:cover}
+.upcoming-info{min-width:0;flex:1}
+.upcoming-name{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;overflow-wrap:anywhere}
+.upcoming-city{font-size:.75rem;color:var(--on-surface-variant);margin-top:3px}
+.upcoming-card[data-preview]{cursor:pointer}
+.upcoming-card:focus-visible{outline:2px solid var(--tertiary);outline-offset:3px}
+.upcoming-card .progress-bar{position:absolute;bottom:0;left:14px;right:14px;height:2px;background:var(--surface-variant)}
+.upcoming-card .progress-fill{height:100%;width:0;background:var(--primary)}
+@media(max-width:768px){.upcoming-grid{grid-template-columns:1fr}.upcoming-card{gap:10px;padding:12px}.upcoming-date{min-width:83px;font-size:.8rem}.upcoming-section .section-header .count{letter-spacing:.05em;white-space:nowrap}.bottom-nav a{padding:8px 12px}}
+
 /* Skeleton loading */
 .skeleton{background:linear-gradient(90deg,var(--surface-container) 25%,var(--surface-container-high) 50%,var(--surface-container) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
@@ -147,7 +167,8 @@ footer{text-align:center;padding:60px 24px 40px;font-family:'Space Grotesk',sans
   <div class="topbar-inner">
     <div class="logo">Bands</div>
     <div class="nav-links">
-      <a href="#bucket" class="active">Bucket List</a>
+      <a href="#upcoming" class="active">Als Nächstes</a>
+      <a href="#bucket">Bucket List</a>
       <a href="#history">History</a>
     </div>
     <div class="vol-ctrl">
@@ -158,6 +179,11 @@ footer{text-align:center;padding:60px 24px 40px;font-family:'Space Grotesk',sans
   </div>
 </header>
 <main>
+  <section class="upcoming-section" id="upcoming" aria-labelledby="upcoming-title">
+    <div class="upcoming-kicker">Anstehende Konzerte · LIVE 26/27</div>
+    <div class="section-header"><h2 id="upcoming-title">Als Nächstes</h2><div class="count" id="un"></div></div>
+    <div class="upcoming-grid" id="ug"></div>
+  </section>
   <section class="stats-grid">
     <div class="stat-card want">
       <div class="label">Bucket List</div>
@@ -188,7 +214,8 @@ footer{text-align:center;padding:60px 24px 40px;font-family:'Space Grotesk',sans
 </main>
 <footer>Made with 🤘 &amp; good taste</footer>
 <nav class="bottom-nav">
-  <a href="#bucket" class="active">
+  <a href="#upcoming" class="active"><span class="material-symbols-outlined">event</span><span class="nav-label">Als Nächstes</span></a>
+  <a href="#bucket">
     <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">favorite</span>
     <span class="nav-label">Bucket List</span>
   </a>
@@ -371,9 +398,51 @@ function concertYear(b){
   return years?Math.min(...years.map(Number)):null;
 }
 
+function berlinToday(now=new Date()){
+  const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);
+  const value=type=>parts.find(p=>p.type===type).value;
+  return value('year')+'-'+value('month')+'-'+value('day');
+}
+function upcomingEvents(events,today=berlinToday()){
+  return (events||[]).filter(e=>/^\d{4}-\d{2}-\d{2}$/.test(e.date)&&e.date>=today).slice().sort((a,b)=>a.date.localeCompare(b.date));
+}
+function mkUpcomingCard(event,catalog){
+  const band=catalog.find(b=>b.name.toLowerCase()===event.artist.toLowerCase())||{};
+  const el=document.createElement('article');el.className='upcoming-card';
+  el.dataset.date=event.date;el.dataset.artist=event.artist;el.dataset.city=event.city;
+  const date=document.createElement('time');date.className='upcoming-date';date.dateTime=event.date;
+  date.textContent=event.date.split('-').reverse().join('.');el.appendChild(date);
+  const artwork=document.createElement('div');artwork.className='upcoming-img';
+  if(band.img){
+    const img=document.createElement('img');img.src=band.img;img.alt='';img.loading='lazy';artwork.appendChild(img);
+  }else{
+    const fallback=document.createElement('div');fallback.className='fallback-av';fallback.textContent=ini(event.artist);artwork.appendChild(fallback);
+  }
+  el.appendChild(artwork);
+  const info=document.createElement('div');info.className='upcoming-info';
+  const name=document.createElement('div');name.className='upcoming-name';name.textContent=event.artist;
+  const city=document.createElement('div');city.className='upcoming-city';city.textContent=event.city;
+  info.appendChild(name);info.appendChild(city);el.appendChild(info);
+  if(band.preview){
+    el.dataset.preview=band.preview;el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label',event.artist+' · '+date.textContent+' · '+event.city+' · Hörprobe');
+    const bar=document.createElement('div');bar.className='progress-bar';
+    const fill=document.createElement('div');fill.className='progress-fill';bar.appendChild(fill);el.appendChild(bar);
+    bindAudio(el,band.preview);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});
+  }
+  return el;
+}
+function renderUpcoming(data){
+  const events=upcomingEvents(data.upcoming);
+  const grid=document.getElementById('ug');grid.replaceChildren();
+  events.forEach(event=>grid.appendChild(mkUpcomingCard(event,[...data.want,...data.seen])));
+  document.getElementById('un').textContent=events.length+' Termine';
+  if(!events.length){const empty=document.createElement('p');empty.textContent='Aktuell keine anstehenden Konzerte.';grid.appendChild(empty);}
+}
 async function init(){
   const r=await fetch('bands.json');
   const data=await r.json();
+  renderUpcoming(data);
   const wg=document.getElementById('wg');
   const sg=document.getElementById('sg');
   wg.replaceChildren();sg.replaceChildren();
