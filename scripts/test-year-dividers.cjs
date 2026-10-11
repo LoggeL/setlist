@@ -55,7 +55,7 @@ async function check(input, labels, names){
   await check({want:[],seen:[]},[]);
   await check({want:[],seen:[{name:'Leap',note:'29.02.2024'}]},['2024']);
   const catalog=JSON.parse(fs.readFileSync('bands.json','utf8'));
-  assert.equal(catalog.seen.length,49);assert.equal(catalog.want.length,35);
+  assert.equal(catalog.seen.length,49);assert.equal(catalog.want.length,36);
   const children=await check(catalog,['2026','2025','2024','2023','Ohne Datum']);
   let group;
   const counts={},groups={};
@@ -68,5 +68,5 @@ async function check(input, labels, names){
   assert.deepEqual(groups['2025'].slice(-4),['ENNIO','Peter Fox','Tream','Yu']);
   assert.equal(groups['2023'].at(-1),'From Fall to Spring');
   assert.deepEqual(groups['Ohne Datum'],['Drunken Masters','Mehnersmoos']);
-  console.log('PASS: exact dates, year-only notes, earliest multi-year, exact-date precedence, invalid dates, chronological/alphabetic order; 49 SEEN / 35 WANT',counts);
+  console.log('PASS: exact dates, year-only notes, earliest multi-year, exact-date precedence, invalid dates, chronological/alphabetic order; 49 SEEN / 36 WANT',counts);
 })().catch(e=>{console.error(e);process.exitCode=1;});

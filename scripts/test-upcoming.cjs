@@ -8,7 +8,8 @@ const context=vm.createContext({document:{getElementById:()=>({addEventListener(
 vm.runInContext(src,context);
 const data=JSON.parse(fs.readFileSync('bands.json','utf8'));
 const baseline=JSON.parse(cp.execFileSync('git',['show','6d12a58:bands.json'],{encoding:'utf8'}));
-assert.deepEqual(data.want,baseline.want);assert.deepEqual(data.seen,baseline.seen);
+assert.deepEqual(data.want.filter(b=>b.name!=='Filow'),baseline.want);assert.deepEqual(data.seen,baseline.seen);
+const filow=data.want.filter(b=>b.name==='Filow');assert.equal(filow.length,1);assert.equal(filow[0].trackTitle,'Rasenschach');assert.match(filow[0].preview,/^previews\/Filow\.mp3\?v=\d+$/);assert(fs.statSync('previews/Filow.mp3').size>0);
 const expected=[['2026-10-23','The Butcher Sisters','Mannheim'],['2026-11-06','HOLY PRIEST','Mannheim'],['2026-11-20','Drunken Masters','Stuttgart'],['2026-11-26','Filow','Frankfurt'],['2026-12-18','STUTYARD','Stuttgart'],['2027-04-08','Jack Pott','Wiesbaden'],['2027-04-16','Drunken Masters','Mannheim'],['2027-04-22','Moonkid','Wiesbaden']];
 assert.deepEqual(data.upcoming.map(e=>[e.date,e.artist,e.city]),expected);
 context.events=data.upcoming.slice().reverse();
@@ -23,5 +24,5 @@ for(const [instant,date] of [['2026-10-22T22:30:00Z','2026-10-23'],['2026-11-05T
  context.instant=instant;assert.equal(vm.runInContext('berlinToday(new Date(instant))',context),date);
 }
 assert(html.indexOf('id="upcoming"')<html.indexOf('id="bucket"'));
-assert.equal(data.want.length,35);assert.equal(data.seen.length,49);
-console.log('PASS: exact 8 identities/dates/cities, chronological order, Berlin midnight/DST, day-inclusive filtering, immutable input, unchanged 35 WANT / 49 SEEN.');
+assert.equal(data.want.length,36);assert.equal(data.seen.length,49);
+console.log('PASS: exact 8 identities/dates/cities, chronological order, Berlin midnight/DST, day-inclusive filtering, immutable input, unchanged 36 WANT / 49 SEEN.');
