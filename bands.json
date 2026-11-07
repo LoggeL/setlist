@@ -124,13 +124,6 @@
       "preview": "previews/hbz.mp3?v=1775252380"
     },
     {
-      "name": "HOLY PRIEST",
-      "genre": "Electro",
-      "img": "https://cdn-images.dzcdn.net/images/artist/69cdaf42371c7b5182f592ad90f51e10/250x250-000000-80-0-0.jpg",
-      "trackTitle": "Holy Atlantis",
-      "preview": "previews/Holy-Priest.mp3?v=1789686500"
-    },
-    {
       "name": "Jack Pott",
       "genre": "Punk",
       "deezer": "4XahEEGMFOLFifWBsFMMnN",
@@ -633,7 +626,13 @@
       "img": "https://cdn-images.dzcdn.net/images/artist/a6a2bdbd07306d14fc7318af7a9b3800/250x250-000000-80-0-0.jpg",
       "trackTitle": "Ü30",
       "preview": "previews/The-Butcher-Sisters.mp3?v=1774311427",
-      "note": "Mannheim, 18.10.2024"
+      "note": "Mannheim, 23.10.2026 · Mannheim, 18.10.2024",
+      "attendances": [
+        {
+          "date": "2026-10-23",
+          "city": "Mannheim"
+        }
+      ]
     },
     {
       "name": "Three Days Grace",
@@ -674,6 +673,20 @@
       "trackTitle": "tau mich auf",
       "preview": "previews/Zartmann.mp3?v=1774311427",
       "note": "Southside · 22.06.2025"
+    },
+    {
+      "name": "HOLY PRIEST",
+      "genre": "Electro",
+      "img": "https://cdn-images.dzcdn.net/images/artist/69cdaf42371c7b5182f592ad90f51e10/250x250-000000-80-0-0.jpg",
+      "trackTitle": "Holy Atlantis",
+      "preview": "previews/Holy-Priest.mp3?v=1789686500",
+      "attendances": [
+        {
+          "date": "2026-11-06",
+          "city": "Mannheim"
+        }
+      ],
+      "note": "Mannheim, 06.11.2026"
     }
   ],
   "upcoming": [
@@ -681,12 +694,16 @@
       "date": "2026-10-23",
       "artist": "The Butcher Sisters",
       "city": "Mannheim",
-      "identitySource": "https://thebutchersisters.de/en/info/tours/heimspiel-4"
+      "identitySource": "https://thebutchersisters.de/en/info/tours/heimspiel-4",
+      "completed": true,
+      "completedOn": "2026-11-07"
     },
     {
       "date": "2026-11-06",
       "artist": "HOLY PRIEST",
-      "city": "Mannheim"
+      "city": "Mannheim",
+      "completed": true,
+      "completedOn": "2026-11-07"
     },
     {
       "date": "2026-11-20",
