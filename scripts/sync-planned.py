@@ -79,7 +79,7 @@ def main():
             if not user:
                 raise RuntimeError('Owner logge missing; refusing mutation')
             for event, artist in changes:
-                exists = db.execute('SELECT 1 FROM live_events WHERE user_id=? AND lower(artist_name)=lower(?) AND event_date=?', (user[0], artist['name'], event['date'])).fetchone()
+                exists = db.execute("SELECT 1 FROM live_events WHERE user_id=? AND lower(artist_name)=lower(?) AND event_date=? AND coalesce(venue,'')=? AND coalesce(note,'')=?", (user[0], artist['name'], event['date'], event.get('venue', ''), event.get('city', ''))).fetchone()
                 if not exists:
                     db.execute('INSERT INTO live_events(user_id,artist_name,artist_img,genre,venue,event_date,note,track_title,preview_url) VALUES(?,?,?,?,?,?,?,?,?)', (user[0], artist['name'], artist.get('img'), artist.get('genre'), event.get('venue'), event['date'], event.get('city'), artist.get('trackTitle'), artist.get('preview')))
                 db.execute('DELETE FROM wishlist WHERE user_id=? AND lower(artist_name)=lower(?)', (user[0], artist['name']))
