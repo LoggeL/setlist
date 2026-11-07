@@ -10,11 +10,11 @@ const data=JSON.parse(fs.readFileSync('bands.json','utf8'));
 const baseline=JSON.parse(cp.execFileSync('git',['show','6d12a58:bands.json'],{encoding:'utf8'}));
 assert.deepEqual(data.want.filter(b=>b.name!=='Filow'),baseline.want);assert.deepEqual(data.seen,baseline.seen);
 const filow=data.want.filter(b=>b.name==='Filow');assert.equal(filow.length,1);assert.equal(filow[0].trackTitle,'Rasenschach');assert.match(filow[0].preview,/^previews\/Filow\.mp3\?v=\d+$/);assert(fs.statSync('previews/Filow.mp3').size>0);
-const expected=[['2026-10-23','The Butcher Sisters','Mannheim'],['2026-11-06','HOLY PRIEST','Mannheim'],['2026-11-20','Drunken Masters','Stuttgart'],['2026-11-26','Filow','Frankfurt'],['2026-12-18','STUTYARD','Stuttgart'],['2027-04-08','Jack Pott','Wiesbaden'],['2027-04-16','Drunken Masters','Mannheim'],['2027-04-22','Moonkid','Wiesbaden']];
+const expected=[['2026-10-23','The Butcher Sisters','Mannheim'],['2026-11-06','HOLY PRIEST','Mannheim'],['2026-11-20','Drunken Masters','Stuttgart'],['2026-11-26','Filow','Frankfurt'],['2026-12-18','STUTYARD','Stuttgart'],['2027-02-18','JUGO ÜRDENS','Frankfurt'],['2027-04-03','RAUM27','Wiesbaden'],['2027-04-08','Jack Pott','Wiesbaden'],['2027-04-16','Drunken Masters','Mannheim'],['2027-04-22','Moonkid','Wiesbaden']];
 assert.deepEqual(data.upcoming.map(e=>[e.date,e.artist,e.city]),expected);
 context.events=data.upcoming.slice().reverse();
 const before=JSON.stringify(context.events);
-for(const [today,count] of [['2026-10-12',8],['2026-10-23',8],['2026-10-24',7],['2027-04-17',1],['2027-04-23',0]]){
+for(const [today,count] of [['2026-10-12',10],['2026-10-23',10],['2026-10-24',9],['2026-11-07',8],['2027-02-18',5],['2027-02-19',4],['2027-04-03',4],['2027-04-04',3],['2027-04-17',1],['2027-04-23',0]]){
  context.today=today;
  const actual=vm.runInContext('upcomingEvents(events,today)',context);
  assert.equal(actual.length,count);assert.deepEqual(Array.from(actual,e=>[e.date,e.artist,e.city]),expected.filter(e=>e[0]>=today));
@@ -25,4 +25,4 @@ for(const [instant,date] of [['2026-10-22T22:30:00Z','2026-10-23'],['2026-11-05T
 }
 assert(html.indexOf('id="upcoming"')<html.indexOf('id="bucket"'));
 assert.equal(data.want.length,36);assert.equal(data.seen.length,49);
-console.log('PASS: exact 8 identities/dates/cities, chronological order, Berlin midnight/DST, day-inclusive filtering, immutable input, unchanged 36 WANT / 49 SEEN.');
+console.log('PASS: exact 10 stored events, 8 current upcoming concerts, chronological order, Berlin midnight/DST, day-inclusive filtering, immutable input, unchanged 36 WANT / 49 SEEN.');

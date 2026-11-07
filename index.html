@@ -421,7 +421,7 @@ function mkUpcomingCard(event,catalog){
   el.appendChild(artwork);
   const info=document.createElement('div');info.className='upcoming-info';
   const name=document.createElement('div');name.className='upcoming-name';name.textContent=event.artist;
-  const city=document.createElement('div');city.className='upcoming-city';city.textContent=event.city;
+  const city=document.createElement('div');city.className='upcoming-city';city.textContent=[event.city,event.venue].filter(Boolean).join(' · ');
   info.appendChild(name);info.appendChild(city);el.appendChild(info);
   if(band.preview){
     el.dataset.preview=band.preview;el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label',event.artist+' · '+date.textContent+' · '+event.city+' · Hörprobe');

@@ -707,6 +707,22 @@
       "identityNote": "Checklist logo stutyard; event brand, not an artist. Official 18 December listing: stutyard x unreal."
     },
     {
+      "date": "2027-02-18",
+      "artist": "JUGO ÜRDENS",
+      "city": "Frankfurt",
+      "venue": "Nachtleben",
+      "time": "20:00",
+      "doors": "19:00",
+      "identitySource": "https://www.batschkapp.net/events/jugo-uerdens-frankfurt-nachtleben-2027-02-18-200000"
+    },
+    {
+      "date": "2027-04-03",
+      "artist": "RAUM27",
+      "city": "Wiesbaden",
+      "venue": "Schlachthof",
+      "identitySource": "https://www.reservix.net/presse/raum27-kuendigen-groesste-tour-ihrer-karriere-an/"
+    },
+    {
       "date": "2027-04-08",
       "artist": "Jack Pott",
       "city": "Wiesbaden"
