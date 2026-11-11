@@ -8,7 +8,7 @@ const context=vm.createContext({document:{getElementById:()=>({addEventListener(
 vm.runInContext(src,context);
 const data=JSON.parse(fs.readFileSync('bands.json','utf8'));
 const baseline=JSON.parse(cp.execFileSync('git',['show','6d12a58:bands.json'],{encoding:'utf8'}));
-assert.deepEqual(data.want.filter(b=>b.name!=='Filow'),baseline.want.filter(b=>b.name!=='HOLY PRIEST'));
+assert.deepEqual(data.want.filter(b=>!['Filow','Fall Out Boy'].includes(b.name)),baseline.want.filter(b=>b.name!=='HOLY PRIEST'));
 assert.deepEqual(data.seen.filter(b=>!['HOLY PRIEST','The Butcher Sisters'].includes(b.name)),baseline.seen.filter(b=>b.name!=='The Butcher Sisters'));
 assert(data.seen.find(b=>b.name==='The Butcher Sisters').note.includes(baseline.seen.find(b=>b.name==='The Butcher Sisters').note));
 const filow=data.want.filter(b=>b.name==='Filow');assert.equal(filow.length,1);assert.equal(filow[0].trackTitle,'Rasenschach');assert.match(filow[0].preview,/^previews\/Filow\.mp3\?v=\d+$/);assert(fs.statSync('previews/Filow.mp3').size>0);
@@ -26,5 +26,5 @@ for(const [instant,date] of [['2026-10-22T22:30:00Z','2026-10-23'],['2026-11-05T
  context.instant=instant;assert.equal(vm.runInContext('berlinToday(new Date(instant))',context),date);
 }
 assert(html.indexOf('id="upcoming"')<html.indexOf('id="bucket"'));
-assert.equal(data.want.length,35);assert.equal(data.seen.length,50);
-console.log('PASS: exact 11 stored events, 9 current upcoming concerts, chronological order, Berlin midnight/DST, day-inclusive filtering, immutable input, unchanged 35 WANT / 50 SEEN.');
+assert.equal(data.want.length,36);assert.equal(data.seen.length,50);
+console.log('PASS: exact 11 stored events, 9 current upcoming concerts, chronological order, Berlin midnight/DST, day-inclusive filtering, immutable input, unchanged 36 WANT / 50 SEEN.');
