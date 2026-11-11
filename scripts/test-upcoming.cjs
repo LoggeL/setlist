@@ -8,7 +8,7 @@ const context=vm.createContext({document:{getElementById:()=>({addEventListener(
 vm.runInContext(src,context);
 const data=JSON.parse(fs.readFileSync('bands.json','utf8'));
 const baseline=JSON.parse(cp.execFileSync('git',['show','6d12a58:bands.json'],{encoding:'utf8'}));
-assert.deepEqual(data.want.filter(b=>!['Filow','Fall Out Boy'].includes(b.name)),baseline.want.filter(b=>b.name!=='HOLY PRIEST'));
+assert.deepEqual(data.want.filter(b=>!['Filow','Fall Out Boy','Panic! at the Disco'].includes(b.name)),baseline.want.filter(b=>b.name!=='HOLY PRIEST'));
 assert.deepEqual(data.seen.filter(b=>!['HOLY PRIEST','The Butcher Sisters'].includes(b.name)),baseline.seen.filter(b=>b.name!=='The Butcher Sisters'));
 assert(data.seen.find(b=>b.name==='The Butcher Sisters').note.includes(baseline.seen.find(b=>b.name==='The Butcher Sisters').note));
 const filow=data.want.filter(b=>b.name==='Filow');assert.equal(filow.length,1);assert.equal(filow[0].trackTitle,'Rasenschach');assert.match(filow[0].preview,/^previews\/Filow\.mp3\?v=\d+$/);assert(fs.statSync('previews/Filow.mp3').size>0);
@@ -26,5 +26,8 @@ for(const [instant,date] of [['2026-10-22T22:30:00Z','2026-10-23'],['2026-11-05T
  context.instant=instant;assert.equal(vm.runInContext('berlinToday(new Date(instant))',context),date);
 }
 assert(html.indexOf('id="upcoming"')<html.indexOf('id="bucket"'));
-assert.equal(data.want.length,36);assert.equal(data.seen.length,50);
-console.log('PASS: exact 11 stored events, 9 current upcoming concerts, chronological order, Berlin midnight/DST, day-inclusive filtering, immutable input, unchanged 36 WANT / 50 SEEN.');
+assert.equal(data.want.length,37);assert.equal(data.seen.length,50);
+const panic=data.want.filter(b=>b.name.replace(/[^a-z0-9]/gi,'').toLowerCase()==='panicatthedisco');
+assert.equal(panic.length,1);assert.equal(panic[0].name,'Panic! at the Disco');assert.equal(panic[0].trackTitle,'I Write Sins Not Tragedies');assert.match(panic[0].preview,/^previews\/Panic-at-the-Disco\.mp3\?v=\d+$/);assert(fs.statSync('previews/Panic-at-the-Disco.mp3').size>0);
+assert.equal(data.want.find(b=>b.name==='Fall Out Boy').trackTitle,'Centuries');
+console.log('PASS: exact 11 stored events, 9 current upcoming concerts, chronological order, Berlin midnight/DST, day-inclusive filtering, immutable input, unchanged 37 WANT / 50 SEEN.');
