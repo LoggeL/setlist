@@ -753,6 +753,14 @@
       "date": "2027-04-22",
       "artist": "Moonkid",
       "city": "Wiesbaden"
+    },
+    {
+      "date": "2027-05-28",
+      "artist": "Fall Out Boy",
+      "city": "Mönchengladbach",
+      "venue": "SparkassenPark",
+      "time": "17:30",
+      "identitySource": "https://sparkassenpark.de/veranstaltung/fall-out-boy-28-05-2027-sparkassenpark-moenchengladbach/"
     }
   ]
 }
